@@ -47,6 +47,8 @@
     }
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    /* Prevent CSS display rules from overriding the [hidden] HTML attribute */
+    [hidden] { display: none !important; }
     html { scroll-behavior: smooth; }
 
     body {
@@ -793,14 +795,14 @@
         async>
       {
         "symbols": [
-          { "proName": "SP:SPX",       "title": "标普 500"     },
-          { "proName": "NASDAQ:NDX",   "title": "纳指 100"     },
-          { "proName": "DJ:DJI",       "title": "道  指"       },
-          { "proName": "CBOE:VIX",     "title": "VIX 恐慌"    },
-          { "proName": "TVC:US10Y",    "title": "美 10Y 债息"  },
-          { "proName": "TVC:DXY",      "title": "美元指数"     },
-          { "proName": "TVC:GOLD",     "title": "黄  金"       },
-          { "proName": "NYMEX:CL1!",   "title": "原  油"       }
+          { "proName": "OANDA:SPX500USD",  "title": "标普 500"     },
+          { "proName": "OANDA:NAS100USD",  "title": "纳指 100"     },
+          { "proName": "OANDA:US30USD",    "title": "道  指"       },
+          { "proName": "CAPITALCOM:VIX",   "title": "VIX 恐慌"    },
+          { "proName": "TVC:US10Y",        "title": "美 10Y 债息"  },
+          { "proName": "CAPITALCOM:DXY",   "title": "美元指数"     },
+          { "proName": "TVC:GOLD",         "title": "黄  金"       },
+          { "proName": "TVC:USOIL",        "title": "原  油"       }
         ],
         "showSymbolLogo": true,
         "isTransparent": true,
@@ -887,7 +889,7 @@
               src="https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js"
               async>
             {
-              "symbol":       "SP:SPX",
+              "symbol":       "OANDA:SPX500USD",
               "width":        "100%",
               "height":       230,
               "locale":       "zh_CN",
@@ -927,7 +929,7 @@
               src="https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js"
               async>
             {
-              "symbol":       "NASDAQ:NDX",
+              "symbol":       "OANDA:NAS100USD",
               "width":        "100%",
               "height":       230,
               "locale":       "zh_CN",
@@ -967,7 +969,7 @@
               src="https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js"
               async>
             {
-              "symbol":       "DJ:DJI",
+              "symbol":       "OANDA:US30USD",
               "width":        "100%",
               "height":       230,
               "locale":       "zh_CN",
@@ -1012,7 +1014,7 @@
               src="https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js"
               async>
             {
-              "symbol":       "CBOE:VIX",
+              "symbol":       "CAPITALCOM:VIX",
               "width":        "100%",
               "height":       230,
               "locale":       "zh_CN",
@@ -1056,7 +1058,7 @@
               src="https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js"
               async>
             {
-              "symbol":       "TVC:US10Y",
+              "symbol":       "OANDA:US10YRUSD",
               "width":        "100%",
               "height":       230,
               "locale":       "zh_CN",

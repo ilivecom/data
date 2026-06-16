@@ -110,6 +110,7 @@ body {
   align-items: flex-end;
   gap: .1rem;
   min-width: 0;
+  flex-shrink: 0;      /* prevent logo from squeezing this off-screen */
 }
 .ts {
   font-size: .65rem;
@@ -126,6 +127,7 @@ body {
   font-weight: 800;
   letter-spacing: .12em;
   text-transform: uppercase;
+  white-space: nowrap;   /* prevent "A股 交易中" line-break or clip */
 }
 .cn-status.open  { color: var(--green); }
 .cn-status.close { color: var(--t3); }
@@ -309,19 +311,18 @@ body {
 .etf-spark svg { display: block; width: 100%; height: 30px; }
 
 /* ============================================================
-   LAYER 2 — TV TICKER TAPE
-   ============================================================ */
-.tape-wrap {
-  border: 1px solid var(--bd);
-  border-radius: 8px;
-  overflow: hidden;
-  min-height: 46px;
-  max-width: 100%;
-}
-
-/* ============================================================
    LAYER 2 — MACRO ANCHOR CARDS
    ============================================================ */
+/* TradingView widget cards override (.mc-tv) */
+.mc.mc-tv {
+  padding: 0;
+  height: 150px;
+}
+.mc.mc-tv .tradingview-widget-container,
+.mc.mc-tv .tradingview-widget-container__widget {
+  width: 100%;
+  height: 100%;
+}
 .macro-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -513,33 +514,60 @@ body {
     <div class="sec-txt">全球宏观锚点 &middot; Global Macro Anchors</div>
   </div>
 
-  <!-- TradingView Ticker Tape (async — graceful degradation if blocked in CN) -->
-  <div class="tape-wrap" id="tapeWrap">
-    <div class="tradingview-widget-container">
-      <div class="tradingview-widget-container__widget"></div>
-      <script type="text/javascript"
-              src="https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js"
-              async>
-      {
-        "symbols": [
-          {"proName": "TVC:DXY",        "title": "DXY 美元"},
-          {"proName": "TVC:US10Y",       "title": "US10Y 美债"},
-          {"proName": "CBOE:VIX",        "title": "VIX 恐慌"},
-          {"proName": "NASDAQ:NDX",      "title": "NDX 纳指"},
-          {"proName": "BITSTAMP:BTCUSD", "title": "BTC"}
-        ],
-        "showSymbolLogo": false,
-        "isTransparent": true,
-        "displayMode": "compact",
-        "colorTheme": "dark",
-        "locale": "zh_CN"
-      }
-      </script>
-    </div>
-  </div>
+  <!-- TradingView Macro Widgets（实时行情，不依赖后端 API）-->
+  <div class="macro-grid">
 
-  <!-- Custom Macro Cards（静态 mock，宏观结构不受 CN 网络影响） -->
-  <div class="macro-grid" id="macroGrid"></div>
+    <!-- DXY 美元指数 -->
+    <div class="mc mc-tv">
+      <div class="tradingview-widget-container">
+        <div class="tradingview-widget-container__widget"></div>
+        <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js" async>
+        {"symbol":"TVC:DXY","width":"100%","height":150,"locale":"zh_CN","dateRange":"1D","colorTheme":"dark","isTransparent":true,"autosize":false}
+        </script>
+      </div>
+    </div>
+
+    <!-- US10Y 美债收益率 -->
+    <div class="mc mc-tv">
+      <div class="tradingview-widget-container">
+        <div class="tradingview-widget-container__widget"></div>
+        <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js" async>
+        {"symbol":"TVC:US10Y","width":"100%","height":150,"locale":"zh_CN","dateRange":"1D","colorTheme":"dark","isTransparent":true,"autosize":false}
+        </script>
+      </div>
+    </div>
+
+    <!-- VIX 恐慌指数 -->
+    <div class="mc mc-tv">
+      <div class="tradingview-widget-container">
+        <div class="tradingview-widget-container__widget"></div>
+        <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js" async>
+        {"symbol":"TVC:VIX","width":"100%","height":150,"locale":"zh_CN","dateRange":"1D","colorTheme":"dark","isTransparent":true,"autosize":false}
+        </script>
+      </div>
+    </div>
+
+    <!-- NDX 纳斯达克 100 -->
+    <div class="mc mc-tv">
+      <div class="tradingview-widget-container">
+        <div class="tradingview-widget-container__widget"></div>
+        <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js" async>
+        {"symbol":"NASDAQ:NDX","width":"100%","height":150,"locale":"zh_CN","dateRange":"1D","colorTheme":"dark","isTransparent":true,"autosize":false}
+        </script>
+      </div>
+    </div>
+
+    <!-- BTC/USD 比特币 -->
+    <div class="mc mc-tv">
+      <div class="tradingview-widget-container">
+        <div class="tradingview-widget-container__widget"></div>
+        <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js" async>
+        {"symbol":"BITSTAMP:BTCUSD","width":"100%","height":150,"locale":"zh_CN","dateRange":"1D","colorTheme":"dark","isTransparent":true,"autosize":false}
+        </script>
+      </div>
+    </div>
+
+  </div>
 
   <!-- ─── LAYER 3 · EDITOR'S SLICE + CTA ─── -->
   <div class="sec" style="margin-top:2.6rem">
@@ -585,14 +613,6 @@ body {
     { code: '513100', name: '纳指 ETF',  index: 'Nasdaq 100', premium_pct:  7.2, signal: 'danger'  },
     { code: '513500', name: '标普 ETF',  index: 'S&P 500',    premium_pct:  2.1, signal: 'caution' },
     { code: '513520', name: '日经 ETF',  index: 'Nikkei 225', premium_pct: -1.8, signal: 'safe'    },
-  ];
-
-  var MACRO_MOCK = [
-    { ticker: 'DXY',   label: '美元指数',       value: '104.23',  pct: '-0.12%', dir: 'dn'   },
-    { ticker: 'US10Y', label: '美债 10年收益率', value: '4.31%',   pct: '+0.70%', dir: 'up'   },
-    { ticker: 'VIX',   label: '恐慌指数',       value: '18.42',   pct: '-6.30%', dir: 'dn'   },
-    { ticker: 'NDX',   label: '纳斯达克 100',   value: '19,842',  pct: '+0.45%', dir: 'up'   },
-    { ticker: 'BTC',   label: '比特币 / USD',   value: '$67,420', pct: '+2.09%', dir: 'up'   },
   ];
 
   /* ── 信号映射（JSON signal → CSS class & 文案）─────────── */
@@ -688,24 +708,6 @@ body {
     });
   }
 
-  /* ── Macro 卡片渲染（始终使用 Mock，可接 API 扩展）──────── */
-  function renderMacro() {
-    var grid = document.getElementById('macroGrid');
-    if (!grid) return;
-    grid.innerHTML = MACRO_MOCK.map(function (m, i) {
-      var col   = m.dir === 'up' ? COLORS.opp : m.dir === 'dn' ? COLORS.danger : COLORS.neutral;
-      var arrow = m.dir === 'up' ? '▲' : m.dir === 'dn' ? '▼' : '—';
-      var spark = sparkline(i * 67 + 113, m.dir, col);
-      return '<div class="mc">'
-        + '<div class="mc-ticker">' + esc(m.ticker) + '</div>'
-        + '<div class="mc-lbl">'   + esc(m.label)  + '</div>'
-        + '<div class="mc-val">'   + esc(m.value)  + '</div>'
-        + '<div class="mc-chg ' + m.dir + '">' + arrow + '&nbsp;' + esc(m.pct) + '</div>'
-        + '<div class="mc-spark">' + spark + '</div>'
-        + '</div>';
-    }).join('');
-  }
-
   /* ── A股状态 ─────────────────────────────────────────────── */
   function updateCN(isOpen) {
     var el  = document.getElementById('cnStatus');
@@ -771,13 +773,6 @@ body {
       d.getFullYear() + '-' + pad(d.getMonth()+1) + '-' + pad(d.getDate());
   }
 
-  /* ── TradingView 加载检测（不到则隐藏 tape 区域）──────── */
-  function checkTape() {
-    var wrap  = document.getElementById('tapeWrap');
-    var inner = wrap && wrap.querySelector('iframe');
-    if (!inner) wrap.style.display = 'none';
-  }
-
   /* ── HTML 转义（防止管道数据中的意外字符破坏布局）──────── */
   function esc(str) {
     return String(str)
@@ -788,12 +783,10 @@ body {
   }
 
   /* ── INIT ────────────────────────────────────────────────── */
-  renderMacro();
   tick();
   loadData();                              // 首次加载
   setInterval(loadData, REFRESH_MS);       // 15 分钟自动刷新
   setInterval(tick, 30000);               // 时钟每 30s 更新
-  setTimeout(checkTape, 7000);            // TV widget 超时检测
 
 }());
 </script>

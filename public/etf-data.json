@@ -1,51 +1,60 @@
 {
-  "generated_at": "2026-06-16T11:24:01",
+  "generated_at": "2026-06-16T11:27:13",
   "is_market_open": true,
   "etfs": [
     {
       "code": "513100",
       "name": "纳指 ETF",
-      "price": 2.284,
+      "price": 2.287,
       "iopv": 2.0768,
-      "premium_pct": 9.98,
-      "updated": "2026-06-16 11:24:01",
-      "signal": "caution"
+      "premium_pct": 10.12,
+      "updated": "2026-06-16 11:27:13",
+      "signal": "danger"
     },
     {
       "code": "513500",
       "name": "标普 ETF",
-      "price": 2.585,
+      "price": 2.586,
       "iopv": 2.4331,
-      "premium_pct": 6.24,
-      "updated": "2026-06-16 11:24:01",
+      "premium_pct": 6.28,
+      "updated": "2026-06-16 11:27:13",
       "signal": "caution"
     },
     {
       "code": "159509",
       "name": "纳指科技",
-      "price": 2.77,
+      "price": 2.773,
       "iopv": 2.3175,
-      "premium_pct": 19.53,
-      "updated": "2026-06-16 11:24:01",
+      "premium_pct": 19.65,
+      "updated": "2026-06-16 11:27:13",
       "signal": "danger"
     },
     {
       "code": "159941",
       "name": "纳指 ETF（广发）",
-      "price": 1.693,
+      "price": 1.696,
       "iopv": 1.5567,
-      "premium_pct": 8.76,
-      "updated": "2026-06-16 11:24:01",
+      "premium_pct": 8.95,
+      "updated": "2026-06-16 11:27:13",
       "signal": "caution"
     },
     {
       "code": "513880",
       "name": "日经225 ETF",
-      "price": 2.254,
+      "price": 2.263,
       "iopv": 2.1373,
-      "premium_pct": 5.46,
-      "updated": "2026-06-16 11:24:01",
+      "premium_pct": 5.88,
+      "updated": "2026-06-16 11:27:13",
       "signal": "caution"
+    },
+    {
+      "code": "518880",
+      "name": "黄金 ETF",
+      "price": 8.947,
+      "iopv": 8.9528,
+      "premium_pct": -0.06,
+      "updated": "2026-06-16 11:27:13",
+      "signal": "safe"
     }
   ]
 }

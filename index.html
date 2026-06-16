@@ -122,11 +122,10 @@ body::before {
   user-select: none;
 }
 .logo-hiwd {
-  /* SF Pro Display — matches hiwd.com wordmark. Falls back to system-ui on Apple devices,
-     Noto Sans on Windows / Android. */
+  /* SF Pro Display Light — matches hiwd.com wordmark weight (300). */
   font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Noto Sans', sans-serif;
   font-size: 1.22rem;
-  font-weight: 400;
+  font-weight: 300;
   letter-spacing: -.01em;
   color: var(--t1);
   line-height: 1;
@@ -161,7 +160,7 @@ body::before {
   font-size: .72rem;
   font-weight: 300;    /* light weight — CJK fallback (PingFang/Noto SC) at 300 matches SF Pro Display visual weight */
   letter-spacing: -.01em;
-  color: rgba(233, 237, 245, 0.55);   /* t1 at 55% — readable at w300 on dark bg */
+  color: var(--t1);
 }
 
 /* Header right */

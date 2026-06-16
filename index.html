@@ -6,10 +6,10 @@
 <meta name="description" content="跨境ETF溢价红绿灯 · 全球宏观锚点 · data.hiwd.com">
 <title>宏观雷达 · data.hiwd.com</title>
 
-<!-- Inter Font（CN 用户依赖系统字体降级，不阻塞渲染） -->
+<!-- Outfit (UI) + JetBrains Mono (numbers/tickers) -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;0,900;1,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
 
 <style>
 /* ============================================================
@@ -19,60 +19,98 @@
 [hidden] { display: none !important; }
 
 :root {
-  --bg:         #0A0F1C;
-  --bg-card:    #111827;
-  --t1:         #F0F2F5;
-  --t2:         #8892A4;
-  --t3:         #4B5568;
-  --red:        #FF3B30;
-  --red-bg:     rgba(255,59,48,.09);
-  --red-bd:     rgba(255,59,48,.38);
-  --amber:      #F59E0B;
-  --amber-bg:   rgba(245,158,11,.08);
-  --amber-bd:   rgba(245,158,11,.35);
-  --green:      #34C759;
-  --green-bg:   rgba(52,199,89,.09);
-  --green-bd:   rgba(52,199,89,.32);
-  --blue:       #0A84FF;
-  --bd:         rgba(255,255,255,.06);
-  --r:          14px;
+  /* ── Backgrounds ── */
+  --bg:         #07090F;   /* near-black, cool blue undertone */
+  --bg-card:    #0C1019;   /* card surface */
+  --bg-card-hi: #10151F;   /* slightly elevated card */
+
+  /* ── Text ── */
+  --t1:         #E9EDF5;   /* primary — cool white */
+  --t2:         #7785A0;   /* secondary */
+  --t3:         #37445A;   /* tertiary / muted */
+
+  /* ── Signal — Down / Danger ── */
+  --red:        #FF4444;
+  --red-bg:     rgba(255,68,68,.07);
+  --red-bd:     rgba(255,68,68,.22);
+
+  /* ── Signal — Caution ── */
+  --amber:      #F5A623;
+  --amber-bg:   rgba(245,166,35,.07);
+  --amber-bd:   rgba(245,166,35,.25);
+
+  /* ── Signal — Up / Safe ── */
+  --green:      #0EC87A;   /* teal-green, more precise than Apple #34C759 */
+  --green-bg:   rgba(14,200,122,.07);
+  --green-bd:   rgba(14,200,122,.22);
+
+  /* ── Accent ── */
+  --blue:       #2C6FED;
+
+  /* ── Structure ── */
+  --bd:         rgba(255,255,255,.05);
+  --bd-hi:      rgba(255,255,255,.09);
+  --r:          12px;
+  --r-sm:       8px;
+
+  /* ── Typography ── */
+  --font-ui:    'Outfit', 'PingFang SC', 'Microsoft YaHei', 'SF Pro Display', sans-serif;
+  --font-mono:  'JetBrains Mono', 'SF Mono', 'Menlo', monospace;
 }
 
-/* 核心溢出修复 —— 防止 iOS 横向滚动 */
 html {
   -webkit-text-size-adjust: 100%;
   overflow-x: hidden;
 }
 body {
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont,
-               'PingFang SC', 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif;
+  font-family: var(--font-ui);
   background: var(--bg);
   color: var(--t1);
   min-height: 100vh;
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  overflow-x: hidden;   /* ← 关键：防止任何子元素撑破宽度 */
+  overflow-x: hidden;
   max-width: 100vw;
 }
 
+/* ── Subtle background texture ── */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 80% 50% at 50% -10%, rgba(44,111,237,.06) 0%, transparent 60%),
+    radial-gradient(ellipse 40% 30% at 100% 100%, rgba(14,200,122,.03) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: 0;
+}
+.ribbon, .hdr, main, footer { position: relative; z-index: 1; }
+
 /* ============================================================
-   STATUS RIBBON（顶部细条）
+   STATUS RIBBON
    ============================================================ */
 .ribbon {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: .45rem;
-  padding: .38rem 1rem;
+  gap: .4rem;
+  padding: .32rem 1rem;
+  font-family: var(--font-mono);
   font-size: .58rem;
   font-weight: 500;
-  letter-spacing: .07em;
+  letter-spacing: .04em;
 }
-.ribbon.is-mock    { background: rgba(255,196,0,.05);  color: rgba(255,196,0,.55);
-                     border-bottom: 1px solid rgba(255,196,0,.1); }
-.ribbon.is-live    { background: rgba(52,199,89,.05);  color: rgba(52,199,89,.55);
-                     border-bottom: 1px solid rgba(52,199,89,.1); }
+.ribbon.is-mock {
+  background: rgba(245,166,35,.04);
+  color: rgba(245,166,35,.5);
+  border-bottom: 1px solid rgba(245,166,35,.1);
+}
+.ribbon.is-live {
+  background: rgba(14,200,122,.04);
+  color: rgba(14,200,122,.5);
+  border-bottom: 1px solid rgba(14,200,122,.1);
+}
 
 /* ============================================================
    STICKY HEADER
@@ -81,61 +119,76 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: .95rem 1.25rem;
+  padding: .9rem 1.5rem;
   border-bottom: 1px solid var(--bd);
   position: sticky;
   top: 0;
-  background: rgba(10,15,28,.94);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
+  background: rgba(7,9,15,.92);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   z-index: 99;
 }
 @supports not (backdrop-filter: blur(1px)) {
-  .hdr { background: rgba(10,15,28,.99); }
+  .hdr { background: rgba(7,9,15,.99); }
 }
 
+/* Logo */
 .logo {
-  font-size: .76rem;
-  font-weight: 700;
-  letter-spacing: .12em;
-  color: var(--t2);
-  white-space: nowrap;
   display: flex;
-  align-items: baseline;
-  gap: .35rem;
+  align-items: center;
+  gap: 0;
+  text-decoration: none;
+  white-space: nowrap;
+  user-select: none;
 }
-.logo b { font-weight: 800; color: var(--t1); }
-.logo-sub {
-  font-size: .72rem;
+.logo-hiwd {
+  font-family: var(--font-ui);
+  font-size: .88rem;
   font-weight: 800;
-  letter-spacing: .08em;
+  letter-spacing: -.01em;
   color: var(--t1);
 }
+.logo-dot {
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: var(--blue);
+  margin: 0 .42rem;
+  flex-shrink: 0;
+  opacity: .9;
+}
+.logo-sub {
+  font-family: var(--font-ui);
+  font-size: .75rem;
+  font-weight: 600;
+  letter-spacing: .02em;
+  color: var(--t2);
+}
 
+/* Header right */
 .hdr-right {
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-  gap: .1rem;
-  min-width: 0;
-  flex-shrink: 0;      /* prevent logo from squeezing this off-screen */
+  gap: .08rem;
+  flex-shrink: 0;
 }
 .ts {
-  font-size: .65rem;
+  font-family: var(--font-mono);
+  font-size: .62rem;
   color: var(--t3);
-  font-variant-numeric: tabular-nums;
-  letter-spacing: .04em;
+  letter-spacing: .02em;
   white-space: nowrap;
 }
 .cn-status {
   display: inline-flex;
   align-items: center;
-  gap: .28rem;
-  font-size: .52rem;
-  font-weight: 800;
-  letter-spacing: .12em;
-  text-transform: uppercase;
-  white-space: nowrap;   /* prevent "A股 交易中" line-break or clip */
+  gap: .25rem;
+  font-family: var(--font-mono);
+  font-size: .58rem;
+  font-weight: 500;
+  letter-spacing: .06em;
+  white-space: nowrap;
 }
 .cn-status.open  { color: var(--green); }
 .cn-status.close { color: var(--t3); }
@@ -145,20 +198,20 @@ body {
   background: currentColor;
   flex-shrink: 0;
 }
-.cn-status.open .live-dot { animation: blink 1.6s ease-in-out infinite; }
+.cn-status.open .live-dot { animation: blink 2s ease-in-out infinite; }
 @keyframes blink {
-  0%,100% { opacity:1; }
-  50%     { opacity:.2; }
+  0%,100% { opacity: 1; }
+  50%     { opacity: .15; }
 }
 
 /* ============================================================
    PAGE WRAPPER
    ============================================================ */
 .page {
-  max-width: 860px;
+  max-width: 900px;
   margin: 0 auto;
-  padding: 0 1rem 4rem;
-  overflow-x: hidden; /* 双保险 */
+  padding: 0 1.25rem 5rem;
+  overflow-x: hidden;
 }
 
 /* ============================================================
@@ -167,64 +220,79 @@ body {
 .sec {
   display: flex;
   align-items: center;
-  gap: .55rem;
-  margin: 2.2rem 0 .9rem;
+  gap: .6rem;
+  margin: 2.4rem 0 1rem;
 }
-.sec-line { width: 16px; height: 1px; background: var(--t3); flex-shrink: 0; }
-.sec-txt  {
-  font-size: .6rem;
-  font-weight: 700;
-  letter-spacing: .18em;
+.sec-line {
+  width: 18px;
+  height: 1px;
+  background: var(--t3);
+  flex-shrink: 0;
+  opacity: .7;
+}
+.sec-txt {
+  font-family: var(--font-mono);
+  font-size: .58rem;
+  font-weight: 500;
+  letter-spacing: .14em;
   text-transform: uppercase;
   color: var(--t3);
 }
 
 /* ============================================================
-   LAYER 1 — ETF PREMIUM TRAFFIC LIGHT
+   LAYER 1 — ETF PREMIUM CARDS
    ============================================================ */
 .etf-grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: .75rem;
+  gap: .7rem;
   width: 100%;
 }
-@media (min-width: 580px) {
+@media (min-width: 560px) {
   .etf-grid { grid-template-columns: repeat(3, 1fr); }
 }
 
-/* Loading / error placeholders */
 .etf-placeholder {
   grid-column: 1 / -1;
   text-align: center;
   padding: 2.5rem 1rem;
   color: var(--t3);
-  font-size: .8rem;
+  font-family: var(--font-mono);
+  font-size: .7rem;
   letter-spacing: .05em;
 }
 .etf-placeholder.is-err { color: var(--red); }
 
 .etf-card {
   border-radius: var(--r);
-  padding: 1.35rem 1.2rem 1.1rem;
+  padding: 1.25rem 1.15rem 1rem;
   border: 1px solid transparent;
-  overflow: hidden;          /* prevents internal overflow */
+  overflow: hidden;
   cursor: default;
-  transition: transform .12s ease;
+  transition: transform .14s ease, box-shadow .14s ease;
   -webkit-tap-highlight-color: transparent;
-  min-width: 0;              /* allow flex/grid children to shrink */
+  min-width: 0;
 }
 .etf-card:active { transform: scale(.99); }
 
-/* States */
 .etf-card.neutral { background: var(--bg-card);  border-color: var(--bd); }
-.etf-card.danger  { background: var(--red-bg);   border-color: var(--red-bd);
-                    animation: glowRed 2.8s ease-in-out infinite; }
-.etf-card.caution { background: var(--amber-bg); border-color: var(--amber-bd); }
-.etf-card.opp     { background: var(--green-bg); border-color: var(--green-bd); }
+.etf-card.danger  {
+  background: linear-gradient(145deg, rgba(255,68,68,.06) 0%, var(--bg-card) 100%);
+  border-color: var(--red-bd);
+  animation: glowRed 3s ease-in-out infinite;
+}
+.etf-card.caution {
+  background: linear-gradient(145deg, rgba(245,166,35,.05) 0%, var(--bg-card) 100%);
+  border-color: var(--amber-bd);
+}
+.etf-card.opp {
+  background: linear-gradient(145deg, rgba(14,200,122,.05) 0%, var(--bg-card) 100%);
+  border-color: var(--green-bd);
+}
 
 @keyframes glowRed {
-  0%,100% { box-shadow: 0 0  0px 0px rgba(255,59,48,0); }
-  50%     { box-shadow: 0 0 22px 3px rgba(255,59,48,.16); }
+  0%,100% { box-shadow: none; }
+  50%     { box-shadow: 0 0 28px 4px rgba(255,68,68,.1); }
 }
 
 .etf-head {
@@ -232,66 +300,68 @@ body {
   align-items: flex-start;
   justify-content: space-between;
   gap: .5rem;
-  margin-bottom: 1.1rem;
+  margin-bottom: 1rem;
 }
 .etf-meta-top { min-width: 0; flex: 1; }
 .etf-code {
+  font-family: var(--font-mono);
   font-size: .6rem;
-  font-weight: 700;
-  letter-spacing: .1em;
-  text-transform: uppercase;
+  font-weight: 500;
+  letter-spacing: .08em;
   color: var(--t3);
-  margin-bottom: .22rem;
+  margin-bottom: .2rem;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 .etf-name {
-  font-size: 1rem;
+  font-size: 1.05rem;
   font-weight: 700;
   color: var(--t1);
-  line-height: 1.2;
+  line-height: 1.15;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  letter-spacing: -.01em;
 }
 
 .etf-badge {
   flex-shrink: 0;
-  padding: .2rem .5rem;
-  border-radius: 4px;
-  font-size: .56rem;
-  font-weight: 800;
-  letter-spacing: .08em;
-  text-transform: uppercase;
+  padding: .18rem .48rem;
+  border-radius: var(--r-sm);
+  font-family: var(--font-mono);
+  font-size: .54rem;
+  font-weight: 600;
+  letter-spacing: .04em;
   white-space: nowrap;
   align-self: flex-start;
 }
-.neutral .etf-badge { background: rgba(255,255,255,.05); color: var(--t3); }
-.danger  .etf-badge { background: rgba(255,59,48,.2);    color: var(--red); }
-.caution .etf-badge { background: rgba(245,158,11,.18);  color: var(--amber); }
-.opp     .etf-badge { background: rgba(52,199,89,.18);   color: var(--green); }
+.neutral .etf-badge { background: rgba(255,255,255,.04); color: var(--t3); }
+.danger  .etf-badge { background: rgba(255,68,68,.14);   color: var(--red); }
+.caution .etf-badge { background: rgba(245,166,35,.14);  color: var(--amber); }
+.opp     .etf-badge { background: rgba(14,200,122,.14);  color: var(--green); }
 
 .etf-rate-lbl {
   font-size: .58rem;
-  font-weight: 600;
-  letter-spacing: .1em;
-  text-transform: uppercase;
+  font-weight: 500;
+  letter-spacing: .06em;
   color: var(--t3);
-  margin-bottom: .18rem;
+  margin-bottom: .16rem;
+  text-transform: uppercase;
 }
 .etf-rate {
-  /* clamp: min 1.8rem, preferred 10vw, max 2.8rem */
-  font-size: clamp(1.8rem, 10vw, 2.8rem);
-  font-weight: 900;
+  font-family: var(--font-mono);
+  font-size: clamp(1.9rem, 10vw, 2.75rem);
+  font-weight: 700;
   line-height: 1;
-  letter-spacing: -.04em;
+  letter-spacing: -.03em;
   word-break: keep-all;
   white-space: nowrap;
+  font-variant-numeric: tabular-nums;
 }
 .etf-rate sup {
-  font-size: .45em;
-  font-weight: 700;
+  font-size: .42em;
+  font-weight: 600;
   letter-spacing: 0;
   vertical-align: super;
 }
@@ -302,21 +372,26 @@ body {
 
 .etf-sub {
   display: flex;
-  gap: 1.2rem;
-  margin-top: .6rem;
+  gap: 1.1rem;
+  margin-top: .55rem;
 }
-.etf-sub-item {}
-.etf-sub-lbl { font-size: .58rem; color: var(--t3); margin-bottom: .1rem; }
-.etf-sub-val { font-size: .75rem; font-weight: 600; color: var(--t2); }
+.etf-sub-lbl { font-size: .56rem; color: var(--t3); margin-bottom: .08rem; letter-spacing: .03em; }
+.etf-sub-val {
+  font-family: var(--font-mono);
+  font-size: .72rem;
+  font-weight: 500;
+  color: var(--t2);
+  font-variant-numeric: tabular-nums;
+}
 
 .etf-spark {
-  margin-top: .9rem;
-  height: 30px;
-  opacity: .7;
+  margin-top: .85rem;
+  height: 28px;
+  opacity: .55;
   width: 100%;
   overflow: hidden;
 }
-.etf-spark svg { display: block; width: 100%; height: 30px; }
+.etf-spark svg { display: block; width: 100%; height: 28px; }
 
 /* ============================================================
    LAYER 2 — MACRO ANCHOR CARDS
@@ -324,73 +399,83 @@ body {
 .macro-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: .6rem;
-  margin-top: .65rem;
+  gap: .55rem;
+  margin-top: .55rem;
   width: 100%;
 }
-@media (min-width: 580px) {
+@media (min-width: 560px) {
   .macro-grid { grid-template-columns: repeat(5, 1fr); }
 }
-@media (max-width: 579px) {
+@media (max-width: 559px) {
   .macro-grid .mc:nth-child(5) { grid-column: 1 / -1; }
 }
 
 .mc {
   background: var(--bg-card);
   border: 1px solid var(--bd);
-  border-radius: 10px;
-  padding: .85rem .8rem .75rem;
+  border-radius: var(--r-sm);
+  padding: .9rem .85rem .8rem;
   min-width: 0;
   overflow: hidden;
+  transition: border-color .15s ease;
 }
+.mc:hover { border-color: var(--bd-hi); }
+
 .mc-ticker {
-  font-size: .6rem;
-  font-weight: 800;
-  letter-spacing: .15em;
+  font-family: var(--font-mono);
+  font-size: .58rem;
+  font-weight: 600;
+  letter-spacing: .1em;
   text-transform: uppercase;
   color: var(--t3);
-  margin-bottom: .18rem;
+  margin-bottom: .16rem;
   white-space: nowrap;
 }
 .mc-lbl {
-  font-size: .65rem;
+  font-size: .64rem;
+  font-weight: 500;
   color: var(--t2);
-  margin-bottom: .7rem;
+  margin-bottom: .65rem;
   line-height: 1.3;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 .mc-val {
-  font-size: clamp(1rem, 4vw, 1.3rem);
-  font-weight: 900;
+  font-family: var(--font-mono);
+  font-size: clamp(1rem, 4vw, 1.28rem);
+  font-weight: 600;
   color: var(--t1);
-  letter-spacing: -.025em;
+  letter-spacing: -.02em;
   line-height: 1;
-  margin-bottom: .3rem;
+  margin-bottom: .28rem;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  font-variant-numeric: tabular-nums;
 }
 .mc-chg {
   display: inline-flex;
   align-items: center;
-  gap: .12rem;
-  font-size: .7rem;
-  font-weight: 700;
+  gap: .1rem;
+  font-family: var(--font-mono);
+  font-size: .66rem;
+  font-weight: 500;
   white-space: nowrap;
+  font-variant-numeric: tabular-nums;
 }
 .mc-chg.up   { color: var(--green); }
 .mc-chg.dn   { color: var(--red); }
 .mc-chg.flat { color: var(--t3); }
+
 .mc-spark {
-  margin-top: .6rem;
-  height: 22px;
-  opacity: .65;
+  margin-top: .55rem;
+  height: 20px;
+  opacity: .55;
   width: 100%;
   overflow: hidden;
 }
-.mc-spark svg { display: block; width: 100%; height: 22px; }
+.mc-spark svg { display: block; width: 100%; height: 20px; }
 
 /* ============================================================
    LAYER 3 — EDITOR'S SLICE + CTA
@@ -398,40 +483,44 @@ body {
 .editor-card {
   border: 1px solid var(--bd);
   border-radius: var(--r);
-  padding: 1.4rem 1.35rem 1.5rem;
-  background: linear-gradient(145deg, rgba(17,24,39,.9), rgba(10,15,28,1));
+  padding: 1.5rem 1.4rem;
+  background: var(--bg-card);
   position: relative;
   overflow: hidden;
 }
+/* Thin accent line on top */
 .editor-card::before {
   content: '';
   position: absolute;
   top: 0; left: 0; right: 0;
   height: 1px;
   background: linear-gradient(90deg,
-    transparent 0%, rgba(255,59,48,.5) 40%,
-    rgba(255,59,48,.5) 60%, transparent 100%);
+    transparent 0%,
+    rgba(44,111,237,.5) 35%,
+    rgba(44,111,237,.5) 65%,
+    transparent 100%);
 }
 
 .ed-eyebrow {
+  font-family: var(--font-mono);
   font-size: .58rem;
-  font-weight: 800;
-  letter-spacing: .18em;
+  font-weight: 500;
+  letter-spacing: .12em;
   text-transform: uppercase;
   color: var(--t3);
-  margin-bottom: .9rem;
+  margin-bottom: .85rem;
 }
 .ed-quote {
-  font-style: normal;
-  font-size: .88rem;
-  line-height: 1.8;
+  font-size: .87rem;
+  font-weight: 400;
+  line-height: 1.85;
   color: var(--t2);
-  padding-left: 1rem;
-  border-left: 2px solid rgba(255,255,255,.08);
-  margin-bottom: 1.3rem;
+  padding-left: .95rem;
+  border-left: 1px solid rgba(255,255,255,.07);
+  margin-bottom: 1.25rem;
 }
-.ed-quote .ok   { font-style: normal; font-weight: 700; color: var(--green); }
-.ed-quote .warn { font-style: normal; font-weight: 700; color: var(--red); }
+.ed-quote .ok   { font-weight: 600; color: var(--green); }
+.ed-quote .warn { font-weight: 600; color: var(--red); }
 
 .cta {
   display: flex;
@@ -439,15 +528,15 @@ body {
   justify-content: center;
   gap: .4rem;
   width: 100%;
-  padding: .95rem 1.25rem;
+  padding: .9rem 1.25rem;
   background: var(--blue);
   color: #fff;
-  font-family: inherit;
-  font-size: .88rem;
-  font-weight: 700;
+  font-family: var(--font-ui);
+  font-size: .9rem;
+  font-weight: 600;
   letter-spacing: .01em;
   text-decoration: none;
-  border-radius: 10px;
+  border-radius: var(--r-sm);
   border: none;
   cursor: pointer;
   transition: filter .12s ease, transform .1s ease;
@@ -455,21 +544,58 @@ body {
   text-align: center;
   line-height: 1.3;
 }
-.cta:hover  { filter: brightness(1.14); }
+.cta:hover  { filter: brightness(1.18); }
 .cta:active { transform: scale(.98); }
 
 /* ============================================================
    FOOTER
    ============================================================ */
 .footer {
-  padding: 2.5rem 1rem 2rem;
-  text-align: center;
+  padding: 2.5rem 1.5rem 2.5rem;
+  border-top: 1px solid var(--bd);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: .9rem;
+}
+
+/* Site nav — shows the whole hiwd network */
+.footer-nav {
+  display: flex;
+  align-items: center;
+  gap: .2rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.footer-nav a {
+  font-family: var(--font-ui);
+  font-size: .72rem;
+  font-weight: 500;
+  color: var(--t3);
+  text-decoration: none;
+  padding: .2rem .45rem;
+  border-radius: 4px;
+  transition: color .12s ease;
+  letter-spacing: .01em;
+}
+.footer-nav a:hover  { color: var(--t2); }
+.footer-nav a.active { color: var(--t2); }
+.footer-nav .sep {
+  color: var(--t3);
+  font-size: .6rem;
+  opacity: .35;
+  user-select: none;
+}
+
+.footer-legal {
   font-size: .58rem;
   color: var(--t3);
-  letter-spacing: .05em;
-  line-height: 2;
+  letter-spacing: .04em;
+  text-align: center;
+  line-height: 1.8;
+  opacity: .7;
 }
-.footer a { color: var(--t3); text-decoration: none; }
+.footer-legal a { color: inherit; text-decoration: none; }
 </style>
 </head>
 <body>
@@ -481,7 +607,11 @@ body {
 
 <!-- ── STICKY HEADER ── -->
 <header class="hdr">
-  <div class="logo"><b>hiwd</b><span class="logo-sub">数据看板</span></div>
+  <a href="https://hiwd.com" class="logo">
+    <span class="logo-hiwd">hiwd</span>
+    <span class="logo-dot"></span>
+    <span class="logo-sub">数据看板</span>
+  </a>
   <div class="hdr-right">
     <span class="ts" id="ts">—</span>
     <span class="cn-status close" id="cnStatus">
@@ -542,8 +672,17 @@ body {
 </main>
 
 <footer class="footer">
-  <p>数据仅供参考，不构成投资建议 &middot; FOR REFERENCE ONLY — NOT INVESTMENT ADVICE</p>
-  <p style="margin-top:.3rem">© 2026&nbsp;<a href="https://hiwd.com">hiwd.com</a></p>
+  <nav class="footer-nav">
+    <a href="https://hiwd.com">hiwd.com</a>
+    <span class="sep">·</span>
+    <a href="https://daily.hiwd.com">daily.hiwd.com</a>
+    <span class="sep">·</span>
+    <a href="https://data.hiwd.com" class="active">data.hiwd.com</a>
+  </nav>
+  <div class="footer-legal">
+    数据仅供参考，不构成投资建议 &middot; FOR REFERENCE ONLY — NOT INVESTMENT ADVICE<br>
+    © 2026 <a href="https://hiwd.com">hiwd.com</a>
+  </div>
 </footer>
 
 

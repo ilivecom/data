@@ -501,6 +501,17 @@ body::before {
 .ed-quote .ok   { font-weight: 600; color: var(--green); }
 .ed-quote .warn { font-weight: 600; color: var(--red); }
 
+/* 一句话总结 */
+.ed-summary {
+  font-family: var(--font-ui);
+  font-size: .95rem;
+  font-weight: 600;
+  color: var(--t1);
+  line-height: 1.5;
+  margin-bottom: .9rem;
+  letter-spacing: -.01em;
+}
+
 .cta {
   display: flex;
   align-items: center;
@@ -631,6 +642,7 @@ body::before {
 
   <div class="editor-card">
     <div class="ed-eyebrow">今日判定 &middot; <span id="edDate">—</span></div>
+    <div class="ed-summary" id="edSummary">数据加载中…</div>
     <div class="ed-quote">
       今日宏观数据已更新。关注 <span class="ok">全球宏观锚点</span> 与跨境 ETF 溢价动态，
       完整 AI 解读见每日简报。
@@ -772,6 +784,36 @@ body::before {
       });
   }
 
+  /* ── 一句话总结（根据 ETF 数据动态生成）─────────────────── */
+  function updateEditorSummary(etfs) {
+    var el = document.getElementById('edSummary');
+    if (!el) return;
+    var danger  = etfs.filter(function(e){ return e.signal === 'danger';  }).length;
+    var caution = etfs.filter(function(e){ return e.signal === 'caution'; }).length;
+    var safe    = etfs.filter(function(e){ return e.signal === 'safe';    }).length;
+    var total   = etfs.length;
+    var maxPct  = Math.max.apply(null, etfs.map(function(e){ return e.premium_pct || 0; }));
+    var msg;
+    if (danger >= 3) {
+      msg = '多支跨境 ETF 溢价严重过热，当前追高风险极大';
+    } else if (danger >= 2) {
+      msg = danger + ' 支 ETF 进入过热区间，短期追高需谨慎';
+    } else if (danger === 1 && caution >= 2) {
+      msg = '溢价整体偏高，最高达 +' + maxPct.toFixed(1) + '%，建议等待回落';
+    } else if (danger === 1) {
+      msg = '1 支 ETF 溢价过热，其余处于关注区间';
+    } else if (safe >= 2) {
+      msg = safe + ' 支 ETF 出现折价，存在低吸套利窗口';
+    } else if (safe === 1 && caution === 0 && danger === 0) {
+      msg = '整体溢价平稳，' + etfs[0].name + ' 等可关注折价机会';
+    } else if (caution >= 3) {
+      msg = '多支 ETF 溢价偏高，需持续关注';
+    } else {
+      msg = '当前跨境 ETF 溢价整体可控，保持观察';
+    }
+    el.textContent = msg;
+  }
+
   /* ── ETF 卡片渲染 ────────────────────────────────────────── */
   function renderETF(etfs) {
     var grid = document.getElementById('etfGrid');
@@ -864,6 +906,7 @@ body::before {
         var etfs = Array.isArray(payload.etfs) ? payload.etfs : [];
         if (etfs.length === 0) throw new Error('empty');
         renderETF(etfs);
+        updateEditorSummary(etfs);
         updateCN(!!payload.is_market_open);
         setRibbon('live', payload.generated_at || '');
       })
@@ -874,6 +917,7 @@ body::before {
                    premium_pct: e.premium_pct, signal: e.signal };
         });
         renderETF(mockEtfs);
+        updateEditorSummary(mockEtfs);
         updateCN(isCNMarketOpen());   // pipeline 不可用时用本地时间判断
         setRibbon('mock', '');
       });

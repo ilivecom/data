@@ -55,6 +55,7 @@ DEFAULT_CONFIG: Dict[str, Any] = {
         {"code": "513500", "name": "标普 ETF"},
         {"code": "159509", "name": "纳指科技"},
         {"code": "159941", "name": "纳指 ETF（广发）"},
+        {"code": "513880", "name": "日经225 ETF"},
     ],
     "thresholds": {
         "danger":  10.0,   # 溢价率 > 10% → 🔴 警告

@@ -97,12 +97,22 @@ body {
 .logo {
   font-size: .76rem;
   font-weight: 700;
-  letter-spacing: .18em;
+  letter-spacing: .12em;
   text-transform: uppercase;
   color: var(--t2);
   white-space: nowrap;
+  display: flex;
+  align-items: baseline;
+  gap: .35rem;
 }
 .logo b { font-weight: 800; color: var(--t1); }
+.logo-sub {
+  font-size: .72rem;
+  font-weight: 500;
+  letter-spacing: .08em;
+  color: var(--t2);
+  text-transform: none;
+}
 
 .hdr-right {
   display: flex;
@@ -473,7 +483,7 @@ body {
 
 <!-- ── STICKY HEADER ── -->
 <header class="hdr">
-  <div class="logo">data.<b>hiwd</b>.com</div>
+  <div class="logo"><b>hiwd</b><span class="logo-sub">数据看板</span></div>
   <div class="hdr-right">
     <span class="ts" id="ts">—</span>
     <span class="cn-status close" id="cnStatus">

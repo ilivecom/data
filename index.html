@@ -313,16 +313,6 @@ body {
 /* ============================================================
    LAYER 2 — MACRO ANCHOR CARDS
    ============================================================ */
-/* TradingView widget cards override (.mc-tv) */
-.mc.mc-tv {
-  padding: 0;
-  height: 150px;
-}
-.mc.mc-tv .tradingview-widget-container,
-.mc.mc-tv .tradingview-widget-container__widget {
-  width: 100%;
-  height: 100%;
-}
 .macro-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -509,64 +499,16 @@ body {
   </div>
 
   <!-- ─── LAYER 2 · GLOBAL MACRO ANCHORS ─── -->
-  <div class="sec" style="margin-top:2.6rem">
-    <div class="sec-line"></div>
-    <div class="sec-txt">全球宏观锚点 &middot; Global Macro Anchors</div>
-  </div>
-
-  <!-- TradingView Macro Widgets（实时行情，不依赖后端 API）-->
-  <div class="macro-grid">
-
-    <!-- DXY 美元指数 -->
-    <div class="mc mc-tv">
-      <div class="tradingview-widget-container">
-        <div class="tradingview-widget-container__widget"></div>
-        <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js" async>
-        {"symbol":"TVC:DXY","width":"100%","height":150,"locale":"zh_CN","dateRange":"1D","colorTheme":"dark","isTransparent":true,"autosize":false}
-        </script>
-      </div>
+  <!-- 宏观指标由 macro_pipeline.py (yfinance) 每 30 分钟更新，JS 动态渲染 -->
+  <!-- loadMacro() 失败时隐藏整个 #macroSection（含标题）-->
+  <div id="macroSection">
+    <div class="sec" style="margin-top:2.6rem">
+      <div class="sec-line"></div>
+      <div class="sec-txt">全球宏观锚点 &middot; Global Macro Anchors</div>
     </div>
-
-    <!-- US10Y 美债收益率 -->
-    <div class="mc mc-tv">
-      <div class="tradingview-widget-container">
-        <div class="tradingview-widget-container__widget"></div>
-        <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js" async>
-        {"symbol":"TVC:US10Y","width":"100%","height":150,"locale":"zh_CN","dateRange":"1D","colorTheme":"dark","isTransparent":true,"autosize":false}
-        </script>
-      </div>
+    <div class="macro-grid" id="macroGrid">
+      <!-- populated by loadMacro() -->
     </div>
-
-    <!-- VIX 恐慌指数 -->
-    <div class="mc mc-tv">
-      <div class="tradingview-widget-container">
-        <div class="tradingview-widget-container__widget"></div>
-        <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js" async>
-        {"symbol":"TVC:VIX","width":"100%","height":150,"locale":"zh_CN","dateRange":"1D","colorTheme":"dark","isTransparent":true,"autosize":false}
-        </script>
-      </div>
-    </div>
-
-    <!-- NDX 纳斯达克 100 -->
-    <div class="mc mc-tv">
-      <div class="tradingview-widget-container">
-        <div class="tradingview-widget-container__widget"></div>
-        <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js" async>
-        {"symbol":"NASDAQ:NDX","width":"100%","height":150,"locale":"zh_CN","dateRange":"1D","colorTheme":"dark","isTransparent":true,"autosize":false}
-        </script>
-      </div>
-    </div>
-
-    <!-- BTC/USD 比特币 -->
-    <div class="mc mc-tv">
-      <div class="tradingview-widget-container">
-        <div class="tradingview-widget-container__widget"></div>
-        <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js" async>
-        {"symbol":"BITSTAMP:BTCUSD","width":"100%","height":150,"locale":"zh_CN","dateRange":"1D","colorTheme":"dark","isTransparent":true,"autosize":false}
-        </script>
-      </div>
-    </div>
-
   </div>
 
   <!-- ─── LAYER 3 · EDITOR'S SLICE + CTA ─── -->
@@ -606,7 +548,9 @@ body {
 
   /* ── 配置 ─────────────────────────────────────────────────── */
   var DATA_URL    = '/public/etf-data.json';
+  var MACRO_URL   = '/public/macro-data.json';
   var REFRESH_MS  = 15 * 60 * 1000;   // 15 分钟自动刷新
+  var MACRO_REFRESH = 30 * 60 * 1000; // 宏观 30 分钟刷新
 
   /* ── Mock 数据（pipeline 数据为空时的兜底）──────────────── */
   var ETF_MOCK = [
@@ -663,6 +607,49 @@ body {
   }
 
   var COLORS = { danger: '#FF3B30', caution: '#F59E0B', opp: '#34C759', neutral: '#8892A4' };
+
+  /* ── 宏观指标卡片渲染 ────────────────────────────────────── */
+  function renderMacro(items) {
+    var grid = document.getElementById('macroGrid');
+    if (!grid) return;
+    grid.innerHTML = '';
+    items.forEach(function (item, i) {
+      var dir  = item.dir === 'up' ? 'up' : item.dir === 'dn' ? 'dn' : 'flat';
+      var arrow = dir === 'up' ? '▲' : dir === 'dn' ? '▼' : '—';
+      var col  = dir === 'up' ? '#34C759' : dir === 'dn' ? '#FF3B30' : '#8892A4';
+      var spark = sparkline(i * 31 + 13, dir, col);
+      var mc = document.createElement('div');
+      mc.className = 'mc';
+      mc.innerHTML =
+        '<div class="mc-ticker">' + esc(item.ticker || '') + '</div>'
+        + '<div class="mc-lbl">'    + esc(item.label  || '') + '</div>'
+        + '<div class="mc-val">'    + esc(item.value  || '') + '</div>'
+        + '<div class="mc-chg ' + dir + '">' + arrow + '&nbsp;' + esc(item.pct || '') + '</div>'
+        + '<div class="mc-spark">'  + spark + '</div>';
+      grid.appendChild(mc);
+    });
+  }
+
+  /* ── 宏观数据 Fetch ─────────────────────────────────────── */
+  function loadMacro() {
+    fetch(MACRO_URL, { cache: 'no-cache' })
+      .then(function (res) {
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        return res.json();
+      })
+      .then(function (payload) {
+        var macro = Array.isArray(payload.macro) ? payload.macro : [];
+        if (macro.length === 0) throw new Error('empty');
+        var sec = document.getElementById('macroSection');
+        if (sec) sec.style.display = '';
+        renderMacro(macro);
+      })
+      .catch(function () {
+        /* 数据不可用时隐藏整个宏观区块（"要么显示，要么去掉"）*/
+        var sec = document.getElementById('macroSection');
+        if (sec) sec.style.display = 'none';
+      });
+  }
 
   /* ── ETF 卡片渲染 ────────────────────────────────────────── */
   function renderETF(etfs) {
@@ -799,8 +786,10 @@ body {
   /* ── INIT ────────────────────────────────────────────────── */
   tick();
   updateCN(isCNMarketOpen());              // 立即根据本地时间显示开市状态
-  loadData();                              // 首次加载（live 数据可覆盖上面的判断）
-  setInterval(loadData, REFRESH_MS);       // 15 分钟自动刷新
+  loadData();                              // ETF 首次加载
+  loadMacro();                             // 宏观指标首次加载
+  setInterval(loadData,  REFRESH_MS);      // ETF 15 分钟刷新
+  setInterval(loadMacro, MACRO_REFRESH);   // 宏观 30 分钟刷新
   setInterval(tick, 30000);               // 时钟每 30s 更新
 
 }());

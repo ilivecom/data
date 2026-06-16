@@ -1,0 +1,69 @@
+name: 🌐 Update Macro Data
+
+# ──────────────────────────────────────────────────────────────────────────────
+# 每 30 分钟拉取一次全球宏观指标（DXY/US10Y/VIX/NDX/BTC via yfinance），
+# 写出 public/macro-data.json 供前端静态 fetch。
+#
+# 覆盖时段（工作日）：
+#   A 股盘中：BJT 09:00–15:30  →  UTC 01:00–07:30
+#   美股盘中：NYSE 09:30–16:00  →  UTC 13:30–20:00
+#
+# 非工作日也保持每小时一次，维持数据新鲜度。
+# ──────────────────────────────────────────────────────────────────────────────
+
+on:
+  schedule:
+    # 工作日每 30 分钟（覆盖 A 股 + 美股主要时段）
+    - cron: '5,35 * * * 1-5'
+    # 周末每小时一次（保持数据不过于陈旧）
+    - cron: '5 * * * 0,6'
+
+  # 支持手动触发（方便调试）
+  workflow_dispatch:
+
+permissions:
+  contents: write   # 允许 bot 向 main 分支提交
+
+jobs:
+  update-macro:
+    name: Fetch & Commit Macro Data
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      # 1. 检出代码
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      # 2. 配置 Python
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+          cache-dependency-path: scripts/requirements.txt
+
+      # 3. 安装依赖
+      - name: Install dependencies
+        run: pip install -r scripts/requirements.txt
+
+      # 4. 运行宏观数据管道
+      - name: Run macro pipeline
+        run: |
+          python scripts/macro_pipeline.py \
+            --json-out public/macro-data.json
+
+      # 5. 若文件有变化则提交（[skip ci] 防止触发二次 Pages 部署）
+      - name: Commit updated data
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add public/macro-data.json
+          if git diff --staged --quiet; then
+            echo "No changes — skipping commit"
+          else
+            git commit -m "data: update macro $(date -u +'%Y-%m-%d %H:%M UTC') [skip ci]"
+            git push
+          fi

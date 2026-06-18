@@ -989,7 +989,7 @@ body::before {
         renderETF(etfs);
         renderSouthbound(payload.southbound);
         updateEditorSummary(etfs);
-        updateCN(!!payload.is_market_open);
+        updateCN(isCNMarketOpen());
         setRibbon(
           payload.source_status === 'stale_fallback' ? 'stale' : 'live',
           payload.data_updated_at || payload.generated_at || ''
@@ -1002,7 +1002,7 @@ body::before {
           renderETF(cachedETF.etfs);
           renderSouthbound(cachedETF.southbound);
           updateEditorSummary(cachedETF.etfs);
-          updateCN(!!cachedETF.is_market_open);
+          updateCN(isCNMarketOpen());
           setRibbon(
             cachedETF.source_status === 'stale_fallback' ? 'stale' : 'live',
             cachedETF.data_updated_at || cachedETF.generated_at || ''
@@ -1062,11 +1062,7 @@ body::before {
     var day  = bjt.getUTCDay();                     // 0=Sun … 6=Sat
     var min  = bjt.getUTCHours() * 60 + bjt.getUTCMinutes();
     if (day === 0 || day === 6) return false;       // weekend
-    // 上午 09:30–11:30（含集合竞价缓冲）
-    if (min >= 570 && min < 690) return true;
-    // 下午 13:00–15:00
-    if (min >= 780 && min < 900) return true;
-    return false;
+    return min >= 570 && min <= 900;                // 9:30–15:00（含午休）
   }
 
   /* ── INIT ────────────────────────────────────────────────── */

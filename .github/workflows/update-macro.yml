@@ -24,6 +24,10 @@ on:
 permissions:
   contents: write   # 允许 bot 向 main 分支提交
 
+concurrency:
+  group: data-updates-${{ github.ref }}
+  cancel-in-progress: false
+
 jobs:
   update-macro:
     name: Fetch & Commit Macro Data
@@ -36,6 +40,9 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 1
+
+      - name: Sync latest main
+        run: git pull --ff-only origin main
 
       # 2. 配置 Python
       - name: Set up Python 3.11
@@ -55,7 +62,7 @@ jobs:
           python scripts/macro_pipeline.py \
             --json-out public/macro-data.json
 
-      # 5. 若文件有变化则提交（[skip ci] 防止触发二次 Pages 部署）
+      # 5. 若文件有变化则提交；不要使用 [skip ci]，否则 GitHub Pages 可能不会重新发布
       - name: Commit updated data
         run: |
           git config user.name  "github-actions[bot]"
@@ -64,6 +71,13 @@ jobs:
           if git diff --staged --quiet; then
             echo "No changes — skipping commit"
           else
-            git commit -m "data: update macro $(date -u +'%Y-%m-%d %H:%M UTC') [skip ci]"
-            git push
+            git commit -m "data: update macro $(date -u +'%Y-%m-%d %H:%M UTC')"
+            for attempt in 1 2 3; do
+              if git push; then
+                exit 0
+              fi
+              echo "Push failed, rebasing on latest main (attempt ${attempt})"
+              git pull --rebase origin main
+            done
+            exit 1
           fi

@@ -703,6 +703,12 @@ body::before {
   var MACRO_URL   = '/public/macro-data.json';
   var REFRESH_MS  = 15 * 60 * 1000;   // 15 分钟自动刷新
   var MACRO_REFRESH = 30 * 60 * 1000; // 宏观 30 分钟刷新
+  var cachedETF = null;
+
+  function fetchFresh(url) {
+    var sep = url.indexOf('?') === -1 ? '?' : '&';
+    return fetch(url + sep + '_=' + Date.now(), { cache: 'no-store' });
+  }
 
   /* ── Mock 数据（pipeline 数据为空时的兜底）──────────────── */
   var ETF_MOCK = [
@@ -784,7 +790,7 @@ body::before {
 
   /* ── 宏观数据 Fetch ─────────────────────────────────────── */
   function loadMacro() {
-    fetch(MACRO_URL, { cache: 'no-cache' })
+    fetchFresh(MACRO_URL)
       .then(function (res) {
         if (!res.ok) throw new Error('HTTP ' + res.status);
         return res.json();
@@ -858,6 +864,7 @@ body::before {
     etfs.forEach(function (e, i) {
       var sig      = SIG[e.signal] || SIG[pctToSignal(e.premium_pct || 0)];
       var cls      = sig.cls;
+      var badge    = e.stale ? '↻ 待刷新' : sig.badge;
       var pct      = typeof e.premium_pct === 'number' ? e.premium_pct : 0;
       var sign     = pct >= 0 ? '+' : '';
       var pctStr   = sign + pct.toFixed(2);
@@ -877,7 +884,7 @@ body::before {
         +   '<div class="etf-code">' + esc(e.code || '') + (e.index ? ' &middot; ' + esc(e.index) : '') + '</div>'
         +   '<div class="etf-name">' + esc(e.name || '') + '</div>'
         + '</div>'
-        + '<div class="etf-badge">' + esc(sig.badge) + '</div>'
+        + '<div class="etf-badge">' + esc(badge) + '</div>'
         + '</div>'
         + '<div class="etf-rate-lbl">实时溢价率 Premium Rate</div>'
         + '<div class="etf-rate">' + esc(pctStr) + '<sup>%</sup></div>'
@@ -911,13 +918,16 @@ body::before {
   function setRibbon(mode, genAt) {
     var hdr = document.querySelector('.hdr');
     var ts  = document.getElementById('ts');
-    if (mode === 'live') {
+    if (mode === 'live' || mode === 'stale') {
       isLive = true;
-      if (hdr) { hdr.classList.remove('is-mock'); hdr.classList.add('is-live'); }
+      if (hdr) {
+        hdr.classList.remove('is-live', 'is-mock');
+        hdr.classList.add(mode === 'live' ? 'is-live' : 'is-mock');
+      }
       if (ts && genAt) {
         /* 管道输出的 ISO 字符串视为北京时间(UTC+8)解析。
            若已带时区后缀则剥掉后重新附上 +08:00，保证一致。 */
-        var raw = genAt.replace(/([+-]\d{2}:?\d{2}|Z)$/, '') + '+08:00';
+        var raw = String(genAt).trim().replace(' ', 'T').replace(/([+-]\d{2}:?\d{2}|Z)$/, '') + '+08:00';
         var d   = new Date(raw);
         if (!isNaN(d)) {
           ts.textContent = fmtBJT(toBJT(d.getTime()));
@@ -932,7 +942,7 @@ body::before {
 
   /* ── Fetch + Render ─────────────────────────────────────── */
   function loadData() {
-    fetch(DATA_URL, { cache: 'no-cache' })
+    fetchFresh(DATA_URL)
       .then(function (res) {
         if (!res.ok) throw new Error('HTTP ' + res.status);
         return res.json();
@@ -943,11 +953,25 @@ body::before {
         renderETF(etfs);
         updateEditorSummary(etfs);
         updateCN(!!payload.is_market_open);
-        setRibbon('live', payload.generated_at || '');
+        setRibbon(
+          payload.source_status === 'stale_fallback' ? 'stale' : 'live',
+          payload.data_updated_at || payload.generated_at || ''
+        );
         // Cache for instant next-load render
         try { localStorage.setItem('etf_cache', JSON.stringify(payload)); } catch(e) {}
       })
       .catch(function () {
+        if (cachedETF && Array.isArray(cachedETF.etfs) && cachedETF.etfs.length) {
+          renderETF(cachedETF.etfs);
+          updateEditorSummary(cachedETF.etfs);
+          updateCN(!!cachedETF.is_market_open);
+          setRibbon(
+            cachedETF.source_status === 'stale_fallback' ? 'stale' : 'live',
+            cachedETF.data_updated_at || cachedETF.generated_at || ''
+          );
+          return;
+        }
+
         /* 兜底：显示 Mock 数据，不崩溃 */
         var mockEtfs = ETF_MOCK.map(function (e) {
           return { code: e.code, name: e.name, index: e.index,
@@ -1017,9 +1041,13 @@ body::before {
     if (_cached) {
       var _cp = JSON.parse(_cached);
       if (Array.isArray(_cp.etfs) && _cp.etfs.length) {
+        cachedETF = _cp;
         renderETF(_cp.etfs);
         updateEditorSummary(_cp.etfs);
-        setRibbon('live', _cp.generated_at || '');
+        setRibbon(
+          _cp.source_status === 'stale_fallback' ? 'stale' : 'live',
+          _cp.data_updated_at || _cp.generated_at || ''
+        );
       }
     }
   } catch(e) {}

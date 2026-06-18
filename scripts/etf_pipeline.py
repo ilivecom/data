@@ -116,6 +116,14 @@ def fetch_etf_data(etf_list: List[Dict], fallback: Optional[Dict[str, Dict]] = N
         df = ak.fund_etf_spot_em()
     except Exception as exc:
         log.error(f"AKShare 请求失败: {exc}")
+        if fallback:
+            now_str = datetime.datetime.now(datetime.timezone(datetime.timedelta(hours=8))).strftime("%Y-%m-%d %H:%M:%S")
+            log.warning("使用历史 ETF 数据兜底，并标记为 stale")
+            return [
+                _fallback_etf_item(etf_cfg, fallback[str(etf_cfg["code"]).zfill(6)], now_str)
+                for etf_cfg in etf_list
+                if str(etf_cfg["code"]).zfill(6) in fallback
+            ]
         return []
 
     # 调试用：打印列名，便于排查 AKShare 版本差异
@@ -135,6 +143,10 @@ def fetch_etf_data(etf_list: List[Dict], fallback: Optional[Dict[str, Dict]] = N
         code = str(etf_cfg["code"]).zfill(6)
         row  = df[df[code_col] == code]
         if row.empty:
+            if fallback and code in fallback:
+                log.warning(f"  ⚠ 未找到 ETF {code}（{etf_cfg.get('name','')}），沿用历史数据")
+                results.append(_fallback_etf_item(etf_cfg, fallback[code], now_str))
+                continue
             log.warning(f"  ⚠ 未找到 ETF {code}（{etf_cfg.get('name','')}），跳过")
             continue
         r = row.iloc[0]
@@ -146,14 +158,13 @@ def fetch_etf_data(etf_list: List[Dict], fallback: Optional[Dict[str, Dict]] = N
         iopv = _get_float(r, ["IOPV实时估值", "估算净值", "净值估算", "iopv"])
 
         # ── 折溢价率 ──────────────────────────────────────────────────
-        # 优先读 AKShare 直接提供的列（已帮我们算好）
-        premium_pct = _get_premium_col(r)
-
-        # 若无现成列，用 (price - iopv) / iopv × 100 自行计算
-        if premium_pct is None:
-            if price is not None and iopv is not None and iopv != 0:
-                premium_pct = (price - iopv) / iopv * 100.0
-            elif fallback and code in fallback:
+        # 优先用市价和 IOPV 自行计算，避免 AKShare 字段名/正负号语义变化。
+        premium_pct = None
+        if price is not None and iopv is not None and iopv != 0:
+            premium_pct = (price - iopv) / iopv * 100.0
+        else:
+            premium_pct = _get_premium_col(r)
+            if premium_pct is None and fallback and code in fallback:
                 # 午休等非交易时段 IOPV=0，沿用上次已知溢价率（标注为估算）
                 fb = fallback[code]
                 log.info(f"  {code} IOPV 暂无，沿用上次溢价率 {fb['premium_pct']:+.2f}%（午休/非交易时段）")
@@ -167,7 +178,7 @@ def fetch_etf_data(etf_list: List[Dict], fallback: Optional[Dict[str, Dict]] = N
                     "stale":       True,
                 })
                 continue
-            else:
+            if premium_pct is None:
                 log.warning(f"  ⚠ ETF {code} 无法计算溢价率（缺少市价或 IOPV），跳过")
                 continue
 
@@ -211,7 +222,7 @@ def _get_float(row, candidates: List[str]) -> Optional[float]:
 
 def _get_premium_col(row) -> Optional[float]:
     """兼容多版本 AKShare 的折溢价率列名，并处理 '1.23%' 字符串格式"""
-    candidates = ["折溢价率", "溢价率", "折溢价率(%)", "折价溢价率", "premium_rate"]
+    candidates = ["折溢价率", "溢价率", "折溢价率(%)", "折价溢价率", "基金折价率", "premium_rate"]
     for col in candidates:
         if col in row.index:
             try:
@@ -220,6 +231,21 @@ def _get_premium_col(row) -> Optional[float]:
             except (ValueError, TypeError):
                 continue
     return None
+
+
+def _fallback_etf_item(etf_cfg: Dict, fb: Dict, checked_at: str) -> Dict:
+    """行情源失败时沿用上次数据，但保留原始行情时间，避免误报为实时数据。"""
+    code = str(etf_cfg["code"]).zfill(6)
+    return {
+        "code":        code,
+        "name":        str(etf_cfg.get("name") or fb.get("name") or code),
+        "price":       round(float(fb.get("price", 0)), 4),
+        "iopv":        round(float(fb.get("iopv", 0)), 4),
+        "premium_pct": round(float(fb.get("premium_pct", 0)), 2),
+        "updated":     fb.get("updated", checked_at),
+        "checked_at":  checked_at,
+        "stale":       True,
+    }
 
 
 # ══════════════════════════════════════════════════════════════════════════════
@@ -259,8 +285,13 @@ def build_payload(data: List[Dict], thresholds: Dict) -> Dict:
             **d,
             "signal": get_signal(d["premium_pct"], thresholds),
         })
+    now = datetime.datetime.now(datetime.timezone(datetime.timedelta(hours=8))).isoformat(timespec="seconds")
+    updated_values = [str(d.get("updated", "")) for d in etfs if d.get("updated")]
     return {
-        "generated_at": datetime.datetime.now(datetime.timezone(datetime.timedelta(hours=8))).isoformat(timespec="seconds"),
+        "generated_at": now,
+        "checked_at": now,
+        "data_updated_at": max(updated_values) if updated_values else now,
+        "source_status": "stale_fallback" if any(d.get("stale") for d in etfs) else "live",
         "is_market_open": _is_cn_market_open(),
         "etfs": etfs,
     }

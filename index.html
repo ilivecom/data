@@ -704,6 +704,7 @@ body::before {
   var MACRO_URL   = '/public/macro-data.json';
   var REFRESH_MS  = 15 * 60 * 1000;   // 15 分钟自动刷新
   var MACRO_REFRESH = 30 * 60 * 1000; // 宏观 30 分钟刷新
+  var MARKET_STATUS_MAX_AGE_MS = 30 * 60 * 1000; // 仅信任 30 分钟内的后端休市标记
   var cachedETF = null;
 
   function fetchFresh(url) {
@@ -957,10 +958,43 @@ body::before {
 
   /* ── A股开市：优先用管道 is_market_open，否则本地时段判断 ── */
   function resolveCNMarketOpen(payload) {
-    if (payload && typeof payload.is_market_open === 'boolean') {
-      return payload.is_market_open;
+    var localOpen = isCNMarketOpen();
+    if (!payload || typeof payload.is_market_open !== 'boolean') {
+      return localOpen;
     }
-    return isCNMarketOpen();
+
+    // 仅在本地判断为开市，且后端时间戳足够新时，才允许后端覆盖为休市（用于节假日）。
+    if (!localOpen) return false;
+
+    var ts = getPayloadTime(payload);
+    if (!ts || !isSameBJTDate(ts, Date.now())) {
+      return localOpen;
+    }
+
+    var ageMs = Math.abs(Date.now() - ts.getTime());
+    if (ageMs > MARKET_STATUS_MAX_AGE_MS) {
+      return localOpen;
+    }
+
+    return payload.is_market_open;
+  }
+
+  function getPayloadTime(payload) {
+    if (!payload) return null;
+    var raw = payload.checked_at || payload.generated_at || payload.data_updated_at;
+    if (!raw) return null;
+    var normalized = String(raw).trim().replace(' ', 'T');
+    if (!/([+-]\d{2}:?\d{2}|Z)$/.test(normalized)) normalized += '+08:00';
+    var d = new Date(normalized);
+    return isNaN(d) ? null : d;
+  }
+
+  function isSameBJTDate(left, rightMs) {
+    var a = toBJT(left.getTime());
+    var b = toBJT(rightMs);
+    return a.getUTCFullYear() === b.getUTCFullYear()
+      && a.getUTCMonth() === b.getUTCMonth()
+      && a.getUTCDate() === b.getUTCDate();
   }
 
   /* ── Ribbon → Header border + ts 时间戳 ─────────────────── */

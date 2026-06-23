@@ -1,17 +1,17 @@
 {
-  "generated_at": "2026-06-23T14:23:12+08:00",
-  "checked_at": "2026-06-23T14:23:12+08:00",
-  "data_updated_at": "2026-06-23 14:23:12",
+  "generated_at": "2026-06-23T16:35:31+08:00",
+  "checked_at": "2026-06-23T16:35:31+08:00",
+  "data_updated_at": "2026-06-23 16:35:31",
   "source_status": "live",
-  "is_market_open": true,
+  "is_market_open": false,
   "etfs": [
     {
       "code": "513100",
       "name": "纳指 ETF",
-      "price": 2.181,
+      "price": 2.174,
       "iopv": 2.0638,
-      "premium_pct": 5.68,
-      "updated": "2026-06-23 14:23:12",
+      "premium_pct": 5.34,
+      "updated": "2026-06-23 16:35:31",
       "signal": "caution"
     },
     {
@@ -20,39 +20,39 @@
       "price": 2.505,
       "iopv": 2.4101,
       "premium_pct": 3.94,
-      "updated": "2026-06-23 14:23:12",
+      "updated": "2026-06-23 16:35:31",
       "signal": "neutral"
     },
     {
       "code": "513180",
       "name": "恒生科技 ETF",
-      "price": 0.558,
-      "iopv": 0.5578,
-      "premium_pct": 0.04,
-      "updated": "2026-06-23 14:23:12",
-      "signal": "neutral"
+      "price": 0.559,
+      "iopv": 0.5593,
+      "premium_pct": -0.05,
+      "updated": "2026-06-23 16:35:31",
+      "signal": "safe"
     },
     {
       "code": "513880",
       "name": "日经225 ETF",
-      "price": 2.275,
-      "iopv": 2.1461,
-      "premium_pct": 6.01,
-      "updated": "2026-06-23 14:23:12",
+      "price": 2.274,
+      "iopv": 2.1455,
+      "premium_pct": 5.99,
+      "updated": "2026-06-23 16:35:31",
       "signal": "caution"
     },
     {
       "code": "518880",
       "name": "黄金 ETF",
-      "price": 8.554,
-      "iopv": 8.553,
-      "premium_pct": 0.01,
-      "updated": "2026-06-23 14:23:12",
-      "signal": "neutral"
+      "price": 8.537,
+      "iopv": 8.5563,
+      "premium_pct": -0.23,
+      "updated": "2026-06-23 16:35:31",
+      "signal": "safe"
     }
   ],
   "southbound": {
-    "net_buy": 89.25,
-    "updated": "2026-06-23 14:23:12"
+    "net_buy": 103.71,
+    "updated": "2026-06-23 16:35:31"
   }
 }

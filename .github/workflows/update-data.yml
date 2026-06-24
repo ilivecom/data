@@ -6,8 +6,8 @@ name: 📊 Update All Data
 # 调度说明（GitHub cron 为 UTC，可能有 5–15 分钟延迟）：
 #   工作日：仅 A 股交易时段触发，首个盘中更新点固定为 BJT 09:30
 #           09:30 / 10:00 / 10:30 / 11:00 / 11:30 / 13:00 / 13:30 / 14:00 / 14:30 / 15:00
-#   周末：每 2 小时
-#   兜底：每天 UTC 08:20 ≈ BJT 16:20 强制快照（收盘后）
+#   兜底：工作日 UTC 08:20 ≈ BJT 16:20 强制快照（收盘后）
+#   实际执行前再用 A 股交易日历判定一次，避免节假日 / 调休误跑
 #
 # 历史问题备忘：
 #   - [skip ci] 会阻止 Pages 部署 → 已移除
@@ -26,10 +26,8 @@ on:
     - cron: '0,30 5-6 * * 1-5'
     # 工作日收盘点 15:00（UTC 07:00）
     - cron: '0 7 * * 1-5'
-    # 周末每 2 小时
-    - cron: '5 */2 * * 0,6'
-    # 每日兜底：UTC 08:20 ≈ BJT 16:20（A 股收盘后）
-    - cron: '20 8 * * *'
+    # 工作日兜底：UTC 08:20 ≈ BJT 16:20（A 股收盘后）
+    - cron: '20 8 * * 1-5'
 
   workflow_dispatch:
 
@@ -62,7 +60,31 @@ jobs:
       - name: Install dependencies
         run: pip install -r scripts/requirements.txt
 
+      - name: Check CN Trading Day
+        if: github.event_name == 'schedule'
+        id: cn_trade_day
+        run: |
+          if python - <<'PY'
+          import importlib.util
+          from pathlib import Path
+
+          spec = importlib.util.spec_from_file_location('etf_pipeline', Path('scripts/etf_pipeline.py'))
+          mod = importlib.util.module_from_spec(spec)
+          spec.loader.exec_module(mod)
+          raise SystemExit(0 if mod._is_cn_trade_day() else 1)
+          PY
+          then
+            echo "is_trade_day=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "is_trade_day=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Skip Non-Trading Day
+        if: github.event_name == 'schedule' && steps.cn_trade_day.outputs.is_trade_day != 'true'
+        run: echo 'CN market closed today, skip scheduled update.'
+
       - name: Fetch, commit & push
+        if: github.event_name != 'schedule' || steps.cn_trade_day.outputs.is_trade_day == 'true'
         env:
           PYTHON: python
           SKIP_GIT_PULL: '1'

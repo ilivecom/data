@@ -27,10 +27,10 @@ credentials.json
 !.env.example
 
 # ── Generated data ────────────────────────────────────────────────────────────
-# public/etf-data.json is intentionally NOT ignored:
-#   GitHub Actions commits the updated file so GitHub Pages can serve it.
-#   If running a dedicated server instead, add it back here.
-scripts/cn-trade-dates.json
+# public/etf-data.json and scripts/cn-trade-dates.json are intentionally NOT ignored:
+#   GitHub Actions and the local scheduler both rely on committed JSON outputs and
+#   a checked-in CN trading-calendar cache for holiday/make-up-day correctness.
+#   If running a dedicated server instead, adjust these ignore rules accordingly.
 
 # ── Local update log ──────────────────────────────────────────────────────────
 .update.log

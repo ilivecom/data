@@ -93,25 +93,23 @@ def load_config() -> Dict[str, Any]:
     return DEFAULT_CONFIG
 
 
-def _load_cn_trade_dates() -> Optional[Set[datetime.date]]:
-    """加载 A 股交易日历；失败时返回 None，由上层回退到工作日判断。"""
-    global _CN_TRADE_DATES_CACHE
-    if _CN_TRADE_DATES_CACHE is not None:
-        return _CN_TRADE_DATES_CACHE
+def _read_cn_trade_dates_cache() -> Optional[Set[datetime.date]]:
+    if not TRADE_DATES_CACHE_FILE.exists():
+        return None
 
-    if TRADE_DATES_CACHE_FILE.exists():
-        try:
-            payload = json.loads(TRADE_DATES_CACHE_FILE.read_text(encoding="utf-8"))
-            dates = {
-                datetime.date.fromisoformat(str(raw)[:10])
-                for raw in payload.get("trade_dates", [])
-            }
-            if dates:
-                _CN_TRADE_DATES_CACHE = dates
-                return dates
-        except Exception as exc:
-            log.warning(f"读取交易日历缓存失败，将尝试在线获取: {exc}")
+    try:
+        payload = json.loads(TRADE_DATES_CACHE_FILE.read_text(encoding="utf-8"))
+        dates = {
+            datetime.date.fromisoformat(str(raw)[:10])
+            for raw in payload.get("trade_dates", [])
+        }
+        return dates or None
+    except Exception as exc:
+        log.warning(f"读取交易日历缓存失败，将尝试在线获取: {exc}")
+        return None
 
+
+def _fetch_and_cache_cn_trade_dates() -> Optional[Set[datetime.date]]:
     try:
         import akshare as ak
 
@@ -129,6 +127,7 @@ def _load_cn_trade_dates() -> Optional[Set[datetime.date]]:
             else:
                 dates.add(datetime.date.fromisoformat(str(raw)[:10]))
 
+        global _CN_TRADE_DATES_CACHE
         _CN_TRADE_DATES_CACHE = dates
         try:
             TRADE_DATES_CACHE_FILE.write_text(
@@ -150,13 +149,32 @@ def _load_cn_trade_dates() -> Optional[Set[datetime.date]]:
         return None
 
 
+def _load_cn_trade_dates(target: Optional[datetime.date] = None) -> Optional[Set[datetime.date]]:
+    """加载 A 股交易日历；缓存不覆盖目标日期时会自动刷新。"""
+    global _CN_TRADE_DATES_CACHE
+    target_day = target or datetime.datetime.now(BJT).date()
+
+    if _CN_TRADE_DATES_CACHE is not None and target_day <= max(_CN_TRADE_DATES_CACHE):
+        return _CN_TRADE_DATES_CACHE
+
+    cached_dates = _read_cn_trade_dates_cache()
+    if cached_dates is not None:
+        cached_max = max(cached_dates)
+        if target_day <= cached_max:
+            _CN_TRADE_DATES_CACHE = cached_dates
+            return cached_dates
+        log.info(f"交易日历缓存仅覆盖到 {cached_max.isoformat()}，尝试在线刷新")
+
+    return _fetch_and_cache_cn_trade_dates()
+
+
 def _is_cn_trade_day(day: Optional[datetime.date] = None) -> bool:
     """判断某天是否为 A 股交易日；优先使用交易日历，失败时回退到工作日。"""
     target = day or datetime.datetime.now(BJT).date()
     if target.weekday() >= 5:
         return False
 
-    trade_dates = _load_cn_trade_dates()
+    trade_dates = _load_cn_trade_dates(target)
     if trade_dates is None:
         return True
     return target in trade_dates

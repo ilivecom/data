@@ -8,11 +8,11 @@
   <key>ProgramArguments</key>
   <array>
     <string>/bin/bash</string>
-    <string>/Users/andrew/Documents/data/scripts/run_if_market_time.sh</string>
+    <string>/Users/andrew/.hiwd-data-runner/scripts/run_if_market_time.sh</string>
   </array>
 
   <key>WorkingDirectory</key>
-  <string>/Users/andrew/Documents/data</string>
+  <string>/Users/andrew/.hiwd-data-runner</string>
 
   <key>RunAtLoad</key>
   <true/>
@@ -81,8 +81,8 @@
   </array>
 
   <key>StandardOutPath</key>
-  <string>/Users/andrew/Documents/data/.update.log</string>
+  <string>/Users/andrew/.hiwd-data-runner/.update.log</string>
   <key>StandardErrorPath</key>
-  <string>/Users/andrew/Documents/data/.update.log</string>
+  <string>/Users/andrew/.hiwd-data-runner/.update.log</string>
 </dict>
 </plist>

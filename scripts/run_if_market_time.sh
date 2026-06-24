@@ -20,12 +20,23 @@ PY
 }
 
 is_market_window() {
-  local hm
-  hm="$(TZ=Asia/Shanghai date +%H%M)"
-  case "$hm" in
-    0930|1000|1030|1100|1130|1300|1330|1400|1430|1500|1620) return 0 ;;
-    *) return 1 ;;
-  esac
+  local hm hour minute total
+  hm="${MARKET_TIME_OVERRIDE_HM:-$(TZ=Asia/Shanghai date +%H%M)}"
+  hour="${hm%??}"
+  minute="${hm#??}"
+  total=$((10#$hour * 60 + 10#$minute))
+
+  # launchd missed calendar events are coalesced on wake, so tolerate delayed
+  # starts inside the active sessions instead of requiring an exact hh:mm match.
+  if ((
+    (total >=  9 * 60 + 25 && total <= 11 * 60 + 35) ||
+    (total >= 12 * 60 + 55 && total <= 15 * 60 + 10) ||
+    (total >= 16 * 60 + 15 && total <= 16 * 60 + 35)
+  )); then
+    return 0
+  fi
+
+  return 1
 }
 
 if ! is_trade_day; then
@@ -34,7 +45,7 @@ if ! is_trade_day; then
 fi
 
 if ! is_market_window; then
-  echo "[$(date '+%Y-%m-%d %H:%M:%S')] Skip local fallback: outside scheduled market windows" >> "$LOG"
+  echo "[$(date '+%Y-%m-%d %H:%M:%S')] Skip local fallback: outside allowed market sessions" >> "$LOG"
   exit 0
 fi
 

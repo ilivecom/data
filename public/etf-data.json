@@ -1,58 +1,58 @@
 {
-  "generated_at": "2026-06-25T13:15:37+08:00",
-  "checked_at": "2026-06-25T13:15:37+08:00",
-  "data_updated_at": "2026-06-25 13:15:36",
+  "generated_at": "2026-06-25T13:38:33+08:00",
+  "checked_at": "2026-06-25T13:38:33+08:00",
+  "data_updated_at": "2026-06-25 13:38:32",
   "source_status": "live",
   "is_market_open": true,
   "etfs": [
     {
       "code": "513100",
       "name": "纳指 ETF",
-      "price": 2.204,
+      "price": 2.209,
       "iopv": 1.9883,
-      "premium_pct": 10.85,
-      "updated": "2026-06-25 13:15:36",
+      "premium_pct": 11.1,
+      "updated": "2026-06-25 13:38:32",
       "signal": "danger"
     },
     {
       "code": "513500",
       "name": "标普 ETF",
-      "price": 2.517,
+      "price": 2.522,
       "iopv": 2.3742,
-      "premium_pct": 6.01,
-      "updated": "2026-06-25 13:15:36",
+      "premium_pct": 6.23,
+      "updated": "2026-06-25 13:38:32",
       "signal": "caution"
     },
     {
       "code": "513180",
       "name": "恒生科技 ETF",
       "price": 0.56,
-      "iopv": 0.5615,
-      "premium_pct": -0.27,
-      "updated": "2026-06-25 13:15:36",
+      "iopv": 0.5612,
+      "premium_pct": -0.21,
+      "updated": "2026-06-25 13:38:32",
       "signal": "safe"
     },
     {
       "code": "513880",
       "name": "日经225 ETF",
-      "price": 2.402,
-      "iopv": 2.2139,
-      "premium_pct": 8.5,
-      "updated": "2026-06-25 13:15:36",
+      "price": 2.405,
+      "iopv": 2.2136,
+      "premium_pct": 8.65,
+      "updated": "2026-06-25 13:38:32",
       "signal": "caution"
     },
     {
       "code": "518880",
       "name": "黄金 ETF",
-      "price": 8.323,
-      "iopv": 8.3212,
-      "premium_pct": 0.02,
-      "updated": "2026-06-25 13:15:36",
+      "price": 8.306,
+      "iopv": 8.3028,
+      "premium_pct": 0.04,
+      "updated": "2026-06-25 13:38:32",
       "signal": "neutral"
     }
   ],
   "southbound": {
-    "net_buy": 10.08,
-    "updated": "2026-06-25 13:15:37"
+    "net_buy": 4.62,
+    "updated": "2026-06-25 13:38:33"
   }
 }

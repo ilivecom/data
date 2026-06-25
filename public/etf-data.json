@@ -1,58 +1,58 @@
 {
-  "generated_at": "2026-06-25T09:31:47+08:00",
-  "checked_at": "2026-06-25T09:31:47+08:00",
-  "data_updated_at": "2026-06-25 09:31:46",
+  "generated_at": "2026-06-25T10:15:40+08:00",
+  "checked_at": "2026-06-25T10:15:40+08:00",
+  "data_updated_at": "2026-06-25 10:15:39",
   "source_status": "live",
   "is_market_open": true,
   "etfs": [
     {
       "code": "513100",
       "name": "纳指 ETF",
-      "price": 2.207,
+      "price": 2.196,
       "iopv": 1.9883,
-      "premium_pct": 11.0,
-      "updated": "2026-06-25 09:31:46",
+      "premium_pct": 10.45,
+      "updated": "2026-06-25 10:15:39",
       "signal": "danger"
     },
     {
       "code": "513500",
       "name": "标普 ETF",
-      "price": 2.53,
+      "price": 2.511,
       "iopv": 2.3742,
-      "premium_pct": 6.56,
-      "updated": "2026-06-25 09:31:46",
+      "premium_pct": 5.76,
+      "updated": "2026-06-25 10:15:39",
       "signal": "caution"
     },
     {
       "code": "513180",
       "name": "恒生科技 ETF",
-      "price": 0.568,
-      "iopv": 0.5707,
-      "premium_pct": -0.47,
-      "updated": "2026-06-25 09:31:46",
+      "price": 0.559,
+      "iopv": 0.5605,
+      "premium_pct": -0.27,
+      "updated": "2026-06-25 10:15:39",
       "signal": "safe"
     },
     {
       "code": "513880",
       "name": "日经225 ETF",
-      "price": 2.38,
-      "iopv": 2.1836,
-      "premium_pct": 8.99,
-      "updated": "2026-06-25 09:31:46",
+      "price": 2.389,
+      "iopv": 2.1927,
+      "premium_pct": 8.95,
+      "updated": "2026-06-25 10:15:39",
       "signal": "caution"
     },
     {
       "code": "518880",
       "name": "黄金 ETF",
-      "price": 8.323,
-      "iopv": 8.3162,
+      "price": 8.272,
+      "iopv": 8.2652,
       "premium_pct": 0.08,
-      "updated": "2026-06-25 09:31:46",
+      "updated": "2026-06-25 10:15:39",
       "signal": "neutral"
     }
   ],
   "southbound": {
-    "net_buy": -0.71,
-    "updated": "2026-06-25 09:31:47"
+    "net_buy": 17.56,
+    "updated": "2026-06-25 10:15:40"
   }
 }

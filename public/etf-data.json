@@ -1,58 +1,58 @@
 {
-  "generated_at": "2026-06-29T13:00:28+08:00",
-  "checked_at": "2026-06-29T13:00:28+08:00",
-  "data_updated_at": "2026-06-29 13:00:27",
+  "generated_at": "2026-06-29T13:32:41+08:00",
+  "checked_at": "2026-06-29T13:32:41+08:00",
+  "data_updated_at": "2026-06-29 13:32:40",
   "source_status": "live",
   "is_market_open": true,
   "etfs": [
     {
       "code": "513100",
       "name": "纳指 ETF",
-      "price": 2.164,
+      "price": 2.166,
       "iopv": 1.9803,
-      "premium_pct": 9.28,
-      "updated": "2026-06-29 13:00:27",
+      "premium_pct": 9.38,
+      "updated": "2026-06-29 13:32:40",
       "signal": "caution"
     },
     {
       "code": "513500",
       "name": "标普 ETF",
-      "price": 2.474,
+      "price": 2.478,
       "iopv": 2.3718,
-      "premium_pct": 4.31,
-      "updated": "2026-06-29 13:00:27",
+      "premium_pct": 4.48,
+      "updated": "2026-06-29 13:32:40",
       "signal": "neutral"
     },
     {
       "code": "513180",
       "name": "恒生科技 ETF",
-      "price": 0.561,
-      "iopv": 0.5616,
-      "premium_pct": -0.11,
-      "updated": "2026-06-29 13:00:27",
+      "price": 0.558,
+      "iopv": 0.5607,
+      "premium_pct": -0.48,
+      "updated": "2026-06-29 13:32:40",
       "signal": "safe"
     },
     {
       "code": "513880",
       "name": "日经225 ETF",
-      "price": 2.287,
-      "iopv": 2.1038,
-      "premium_pct": 8.71,
-      "updated": "2026-06-29 13:00:27",
+      "price": 2.288,
+      "iopv": 2.1085,
+      "premium_pct": 8.51,
+      "updated": "2026-06-29 13:32:40",
       "signal": "caution"
     },
     {
       "code": "518880",
       "name": "黄金 ETF",
-      "price": 8.443,
-      "iopv": 8.4355,
-      "premium_pct": 0.09,
-      "updated": "2026-06-29 13:00:27",
+      "price": 8.42,
+      "iopv": 8.4075,
+      "premium_pct": 0.15,
+      "updated": "2026-06-29 13:32:40",
       "signal": "neutral"
     }
   ],
   "southbound": {
-    "net_buy": 7.2,
-    "updated": "2026-06-29 13:00:28"
+    "net_buy": 11.9,
+    "updated": "2026-06-29 13:32:41"
   }
 }

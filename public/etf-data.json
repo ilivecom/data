@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-06-30T16:20:29+08:00",
-  "checked_at": "2026-06-30T16:20:29+08:00",
-  "data_updated_at": "2026-06-30 16:20:28",
+  "generated_at": "2026-06-30T16:23:48+08:00",
+  "checked_at": "2026-06-30T16:23:48+08:00",
+  "data_updated_at": "2026-06-30 16:23:47",
   "source_status": "live",
   "is_market_open": false,
   "etfs": [
@@ -11,7 +11,7 @@
       "price": 2.204,
       "iopv": 2.0251,
       "premium_pct": 8.83,
-      "updated": "2026-06-30 16:20:28",
+      "updated": "2026-06-30 16:23:47",
       "signal": "caution"
     },
     {
@@ -20,7 +20,7 @@
       "price": 2.483,
       "iopv": 2.3991,
       "premium_pct": 3.5,
-      "updated": "2026-06-30 16:20:28",
+      "updated": "2026-06-30 16:23:47",
       "signal": "neutral"
     },
     {
@@ -29,7 +29,7 @@
       "price": 0.567,
       "iopv": 0.5699,
       "premium_pct": -0.51,
-      "updated": "2026-06-30 16:20:28",
+      "updated": "2026-06-30 16:23:47",
       "signal": "safe"
     },
     {
@@ -38,7 +38,7 @@
       "price": 2.328,
       "iopv": 2.1446,
       "premium_pct": 8.55,
-      "updated": "2026-06-30 16:20:28",
+      "updated": "2026-06-30 16:23:47",
       "signal": "caution"
     },
     {
@@ -47,12 +47,12 @@
       "price": 8.378,
       "iopv": 8.3689,
       "premium_pct": 0.11,
-      "updated": "2026-06-30 16:20:28",
+      "updated": "2026-06-30 16:23:47",
       "signal": "neutral"
     }
   ],
   "southbound": {
     "net_buy": 58.95,
-    "updated": "2026-06-30 16:20:29"
+    "updated": "2026-06-30 16:23:48"
   }
 }

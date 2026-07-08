@@ -1,58 +1,58 @@
 {
-  "generated_at": "2026-07-08T13:30:30+08:00",
-  "checked_at": "2026-07-08T13:30:30+08:00",
-  "data_updated_at": "2026-07-08 13:30:30",
+  "generated_at": "2026-07-08T14:00:29+08:00",
+  "checked_at": "2026-07-08T14:00:29+08:00",
+  "data_updated_at": "2026-07-08 14:00:29",
   "source_status": "live",
   "is_market_open": true,
   "etfs": [
     {
       "code": "513100",
       "name": "纳指 ETF",
-      "price": 2.151,
+      "price": 2.147,
       "iopv": 1.9803,
-      "premium_pct": 8.62,
-      "updated": "2026-07-08 13:30:30",
+      "premium_pct": 8.42,
+      "updated": "2026-07-08 14:00:29",
       "signal": "caution"
     },
     {
       "code": "513500",
       "name": "标普 ETF",
-      "price": 2.511,
+      "price": 2.509,
       "iopv": 2.4153,
-      "premium_pct": 3.96,
-      "updated": "2026-07-08 13:30:30",
+      "premium_pct": 3.88,
+      "updated": "2026-07-08 14:00:29",
       "signal": "neutral"
     },
     {
       "code": "513180",
       "name": "恒生科技 ETF",
-      "price": 0.598,
-      "iopv": 0.5996,
-      "premium_pct": -0.27,
-      "updated": "2026-07-08 13:30:30",
+      "price": 0.601,
+      "iopv": 0.603,
+      "premium_pct": -0.33,
+      "updated": "2026-07-08 14:00:29",
       "signal": "safe"
     },
     {
       "code": "513880",
       "name": "日经225 ETF",
-      "price": 2.229,
-      "iopv": 2.0648,
-      "premium_pct": 7.95,
-      "updated": "2026-07-08 13:30:30",
+      "price": 2.221,
+      "iopv": 2.0589,
+      "premium_pct": 7.87,
+      "updated": "2026-07-08 14:00:29",
       "signal": "caution"
     },
     {
       "code": "518880",
       "name": "黄金 ETF",
-      "price": 8.584,
-      "iopv": 8.5822,
+      "price": 8.592,
+      "iopv": 8.5902,
       "premium_pct": 0.02,
-      "updated": "2026-07-08 13:30:30",
+      "updated": "2026-07-08 14:00:29",
       "signal": "neutral"
     }
   ],
   "southbound": {
-    "net_buy": 127.14,
-    "updated": "2026-07-08 13:30:30"
+    "net_buy": 130.84,
+    "updated": "2026-07-08 14:00:29"
   }
 }

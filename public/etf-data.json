@@ -1,58 +1,58 @@
 {
-  "generated_at": "2026-07-08T14:00:29+08:00",
-  "checked_at": "2026-07-08T14:00:29+08:00",
-  "data_updated_at": "2026-07-08 14:00:29",
+  "generated_at": "2026-07-08T14:30:30+08:00",
+  "checked_at": "2026-07-08T14:30:30+08:00",
+  "data_updated_at": "2026-07-08 14:30:29",
   "source_status": "live",
   "is_market_open": true,
   "etfs": [
     {
       "code": "513100",
       "name": "纳指 ETF",
-      "price": 2.147,
+      "price": 2.146,
       "iopv": 1.9803,
-      "premium_pct": 8.42,
-      "updated": "2026-07-08 14:00:29",
+      "premium_pct": 8.37,
+      "updated": "2026-07-08 14:30:29",
       "signal": "caution"
     },
     {
       "code": "513500",
       "name": "标普 ETF",
-      "price": 2.509,
+      "price": 2.51,
       "iopv": 2.4153,
-      "premium_pct": 3.88,
-      "updated": "2026-07-08 14:00:29",
+      "premium_pct": 3.92,
+      "updated": "2026-07-08 14:30:29",
       "signal": "neutral"
     },
     {
       "code": "513180",
       "name": "恒生科技 ETF",
-      "price": 0.601,
-      "iopv": 0.603,
-      "premium_pct": -0.33,
-      "updated": "2026-07-08 14:00:29",
+      "price": 0.606,
+      "iopv": 0.6075,
+      "premium_pct": -0.25,
+      "updated": "2026-07-08 14:30:29",
       "signal": "safe"
     },
     {
       "code": "513880",
       "name": "日经225 ETF",
-      "price": 2.221,
-      "iopv": 2.0589,
-      "premium_pct": 7.87,
-      "updated": "2026-07-08 14:00:29",
+      "price": 2.219,
+      "iopv": 2.0451,
+      "premium_pct": 8.5,
+      "updated": "2026-07-08 14:30:29",
       "signal": "caution"
     },
     {
       "code": "518880",
       "name": "黄金 ETF",
-      "price": 8.592,
-      "iopv": 8.5902,
+      "price": 8.6,
+      "iopv": 8.5987,
       "premium_pct": 0.02,
-      "updated": "2026-07-08 14:00:29",
+      "updated": "2026-07-08 14:30:29",
       "signal": "neutral"
     }
   ],
   "southbound": {
-    "net_buy": 130.84,
-    "updated": "2026-07-08 14:00:29"
+    "net_buy": 135.71,
+    "updated": "2026-07-08 14:30:30"
   }
 }

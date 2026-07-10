@@ -1,58 +1,58 @@
 {
-  "generated_at": "2026-07-10T13:32:33+08:00",
-  "checked_at": "2026-07-10T13:32:33+08:00",
-  "data_updated_at": "2026-07-10 13:32:32",
+  "generated_at": "2026-07-10T13:53:01+08:00",
+  "checked_at": "2026-07-10T13:53:01+08:00",
+  "data_updated_at": "2026-07-10 13:53:00",
   "source_status": "live",
   "is_market_open": true,
   "etfs": [
     {
       "code": "513100",
       "name": "纳指 ETF",
-      "price": 2.183,
+      "price": 2.182,
       "iopv": 2.0174,
-      "premium_pct": 8.21,
-      "updated": "2026-07-10 13:32:32",
+      "premium_pct": 8.16,
+      "updated": "2026-07-10 13:53:00",
       "signal": "caution"
     },
     {
       "code": "513500",
       "name": "标普 ETF",
-      "price": 2.526,
+      "price": 2.527,
       "iopv": 2.4272,
-      "premium_pct": 4.07,
-      "updated": "2026-07-10 13:32:32",
+      "premium_pct": 4.11,
+      "updated": "2026-07-10 13:53:00",
       "signal": "neutral"
     },
     {
       "code": "513180",
       "name": "恒生科技 ETF",
       "price": 0.61,
-      "iopv": 0.6111,
-      "premium_pct": -0.18,
-      "updated": "2026-07-10 13:32:32",
+      "iopv": 0.6101,
+      "premium_pct": -0.02,
+      "updated": "2026-07-10 13:53:00",
       "signal": "safe"
     },
     {
       "code": "513880",
       "name": "日经225 ETF",
       "price": 2.226,
-      "iopv": 2.096,
-      "premium_pct": 6.2,
-      "updated": "2026-07-10 13:32:32",
+      "iopv": 2.0974,
+      "premium_pct": 6.13,
+      "updated": "2026-07-10 13:53:00",
       "signal": "caution"
     },
     {
       "code": "518880",
       "name": "黄金 ETF",
-      "price": 8.543,
-      "iopv": 8.5503,
-      "premium_pct": -0.09,
-      "updated": "2026-07-10 13:32:32",
-      "signal": "safe"
+      "price": 8.548,
+      "iopv": 8.5464,
+      "premium_pct": 0.02,
+      "updated": "2026-07-10 13:53:00",
+      "signal": "neutral"
     }
   ],
   "southbound": {
-    "net_buy": 25.0,
-    "updated": "2026-07-10 13:32:33"
+    "net_buy": 22.21,
+    "updated": "2026-07-10 13:53:01"
   }
 }

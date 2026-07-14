@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-07-14T11:31:36+08:00",
-  "checked_at": "2026-07-14T11:31:36+08:00",
-  "data_updated_at": "2026-07-14 11:31:36",
+  "generated_at": "2026-07-14T12:25:41+08:00",
+  "checked_at": "2026-07-14T12:25:41+08:00",
+  "data_updated_at": "2026-07-14 12:25:40",
   "source_status": "live",
   "is_market_open": false,
   "etfs": [
@@ -11,7 +11,7 @@
       "price": 2.14,
       "iopv": 1.9838,
       "premium_pct": 7.87,
-      "updated": "2026-07-14 11:31:36",
+      "updated": "2026-07-14 12:25:40",
       "signal": "caution"
     },
     {
@@ -20,39 +20,39 @@
       "price": 2.519,
       "iopv": 2.4167,
       "premium_pct": 4.23,
-      "updated": "2026-07-14 11:31:36",
+      "updated": "2026-07-14 12:25:40",
       "signal": "neutral"
     },
     {
       "code": "513180",
       "name": "恒生科技 ETF",
       "price": 0.584,
-      "iopv": 0.5837,
-      "premium_pct": 0.05,
-      "updated": "2026-07-14 11:31:36",
-      "signal": "neutral"
+      "iopv": 0.586,
+      "premium_pct": -0.34,
+      "updated": "2026-07-14 12:25:40",
+      "signal": "safe"
     },
     {
       "code": "513880",
       "name": "日经225 ETF",
       "price": 2.108,
-      "iopv": 2.0371,
-      "premium_pct": 3.48,
-      "updated": "2026-07-14 11:31:36",
+      "iopv": 2.0409,
+      "premium_pct": 3.29,
+      "updated": "2026-07-14 12:25:40",
       "signal": "neutral"
     },
     {
       "code": "518880",
       "name": "黄金 ETF",
       "price": 8.357,
-      "iopv": 8.3558,
-      "premium_pct": 0.01,
-      "updated": "2026-07-14 11:31:36",
+      "iopv": 8.3451,
+      "premium_pct": 0.14,
+      "updated": "2026-07-14 12:25:40",
       "signal": "neutral"
     }
   ],
   "southbound": {
-    "net_buy": 47.52,
-    "updated": "2026-07-14 11:31:36"
+    "net_buy": 49.57,
+    "updated": "2026-07-14 12:25:41"
   }
 }

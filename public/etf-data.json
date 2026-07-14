@@ -1,58 +1,58 @@
 {
-  "generated_at": "2026-07-14T13:00:33+08:00",
-  "checked_at": "2026-07-14T13:00:33+08:00",
-  "data_updated_at": "2026-07-14 13:00:32",
+  "generated_at": "2026-07-14T13:30:29+08:00",
+  "checked_at": "2026-07-14T13:30:29+08:00",
+  "data_updated_at": "2026-07-14 13:30:29",
   "source_status": "live",
   "is_market_open": true,
   "etfs": [
     {
       "code": "513100",
       "name": "纳指 ETF",
-      "price": 2.147,
+      "price": 2.165,
       "iopv": 1.9838,
-      "premium_pct": 8.23,
-      "updated": "2026-07-14 13:00:32",
+      "premium_pct": 9.13,
+      "updated": "2026-07-14 13:30:29",
       "signal": "caution"
     },
     {
       "code": "513500",
       "name": "标普 ETF",
-      "price": 2.52,
+      "price": 2.534,
       "iopv": 2.4167,
-      "premium_pct": 4.27,
-      "updated": "2026-07-14 13:00:32",
+      "premium_pct": 4.85,
+      "updated": "2026-07-14 13:30:29",
       "signal": "neutral"
     },
     {
       "code": "513180",
       "name": "恒生科技 ETF",
-      "price": 0.588,
-      "iopv": 0.5893,
-      "premium_pct": -0.22,
-      "updated": "2026-07-14 13:00:32",
+      "price": 0.593,
+      "iopv": 0.594,
+      "premium_pct": -0.17,
+      "updated": "2026-07-14 13:30:29",
       "signal": "safe"
     },
     {
       "code": "513880",
       "name": "日经225 ETF",
-      "price": 2.129,
-      "iopv": 2.0558,
-      "premium_pct": 3.56,
-      "updated": "2026-07-14 13:00:32",
+      "price": 2.154,
+      "iopv": 2.0652,
+      "premium_pct": 4.3,
+      "updated": "2026-07-14 13:30:29",
       "signal": "neutral"
     },
     {
       "code": "518880",
       "name": "黄金 ETF",
-      "price": 8.361,
-      "iopv": 8.357,
-      "premium_pct": 0.05,
-      "updated": "2026-07-14 13:00:32",
+      "price": 8.374,
+      "iopv": 8.367,
+      "premium_pct": 0.08,
+      "updated": "2026-07-14 13:30:29",
       "signal": "neutral"
     }
   ],
   "southbound": {
-    "net_buy": 49.43,
-    "updated": "2026-07-14 13:00:33"
+    "net_buy": 56.2,
+    "updated": "2026-07-14 13:30:29"
   }
 }

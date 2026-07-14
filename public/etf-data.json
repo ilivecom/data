@@ -1,58 +1,58 @@
 {
-  "generated_at": "2026-07-14T10:30:26+08:00",
-  "checked_at": "2026-07-14T10:30:26+08:00",
-  "data_updated_at": "2026-07-14 10:30:25",
+  "generated_at": "2026-07-14T11:00:29+08:00",
+  "checked_at": "2026-07-14T11:00:29+08:00",
+  "data_updated_at": "2026-07-14 11:00:29",
   "source_status": "live",
   "is_market_open": true,
   "etfs": [
     {
       "code": "513100",
       "name": "纳指 ETF",
-      "price": 2.15,
+      "price": 2.147,
       "iopv": 1.9838,
-      "premium_pct": 8.38,
-      "updated": "2026-07-14 10:30:25",
+      "premium_pct": 8.23,
+      "updated": "2026-07-14 11:00:29",
       "signal": "caution"
     },
     {
       "code": "513500",
       "name": "标普 ETF",
-      "price": 2.515,
+      "price": 2.52,
       "iopv": 2.4167,
-      "premium_pct": 4.07,
-      "updated": "2026-07-14 10:30:25",
+      "premium_pct": 4.27,
+      "updated": "2026-07-14 11:00:29",
       "signal": "neutral"
     },
     {
       "code": "513180",
       "name": "恒生科技 ETF",
-      "price": 0.592,
-      "iopv": 0.5942,
-      "premium_pct": -0.37,
-      "updated": "2026-07-14 10:30:25",
+      "price": 0.584,
+      "iopv": 0.5849,
+      "premium_pct": -0.15,
+      "updated": "2026-07-14 11:00:29",
       "signal": "safe"
     },
     {
       "code": "513880",
       "name": "日经225 ETF",
-      "price": 2.13,
+      "price": 2.122,
       "iopv": 2.0335,
-      "premium_pct": 4.75,
-      "updated": "2026-07-14 10:30:25",
+      "premium_pct": 4.35,
+      "updated": "2026-07-14 11:00:29",
       "signal": "neutral"
     },
     {
       "code": "518880",
       "name": "黄金 ETF",
-      "price": 8.355,
-      "iopv": 8.351,
-      "premium_pct": 0.05,
-      "updated": "2026-07-14 10:30:25",
+      "price": 8.351,
+      "iopv": 8.3457,
+      "premium_pct": 0.06,
+      "updated": "2026-07-14 11:00:29",
       "signal": "neutral"
     }
   ],
   "southbound": {
-    "net_buy": 32.81,
-    "updated": "2026-07-14 10:30:26"
+    "net_buy": 45.6,
+    "updated": "2026-07-14 11:00:29"
   }
 }

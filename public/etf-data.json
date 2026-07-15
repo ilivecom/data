@@ -1,9 +1,9 @@
 {
-  "generated_at": "2026-07-15T15:00:26+08:00",
-  "checked_at": "2026-07-15T15:00:26+08:00",
-  "data_updated_at": "2026-07-15 15:00:25",
+  "generated_at": "2026-07-15T15:03:58+08:00",
+  "checked_at": "2026-07-15T15:03:58+08:00",
+  "data_updated_at": "2026-07-15 15:03:57",
   "source_status": "live",
-  "is_market_open": true,
+  "is_market_open": false,
   "etfs": [
     {
       "code": "513100",
@@ -11,7 +11,7 @@
       "price": 2.188,
       "iopv": 2.0064,
       "premium_pct": 9.05,
-      "updated": "2026-07-15 15:00:25",
+      "updated": "2026-07-15 15:03:57",
       "signal": "caution"
     },
     {
@@ -20,17 +20,17 @@
       "price": 2.564,
       "iopv": 2.4258,
       "premium_pct": 5.7,
-      "updated": "2026-07-15 15:00:25",
+      "updated": "2026-07-15 15:03:57",
       "signal": "caution"
     },
     {
       "code": "513180",
       "name": "恒生科技 ETF",
       "price": 0.603,
-      "iopv": 0.6028,
-      "premium_pct": 0.03,
-      "updated": "2026-07-15 15:00:25",
-      "signal": "neutral"
+      "iopv": 0.6034,
+      "premium_pct": -0.07,
+      "updated": "2026-07-15 15:03:57",
+      "signal": "safe"
     },
     {
       "code": "513880",
@@ -38,7 +38,7 @@
       "price": 2.194,
       "iopv": 2.0916,
       "premium_pct": 4.9,
-      "updated": "2026-07-15 15:00:25",
+      "updated": "2026-07-15 15:03:57",
       "signal": "neutral"
     },
     {
@@ -47,12 +47,12 @@
       "price": 8.369,
       "iopv": 8.3698,
       "premium_pct": -0.01,
-      "updated": "2026-07-15 15:00:25",
+      "updated": "2026-07-15 15:03:57",
       "signal": "safe"
     }
   ],
   "southbound": {
-    "net_buy": 107.82,
-    "updated": "2026-07-15 15:00:26"
+    "net_buy": 107.38,
+    "updated": "2026-07-15 15:03:58"
   }
 }
